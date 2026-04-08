@@ -1,6 +1,6 @@
 [V] motors
 [x] heatplate
-[x] extuder
+[x] extuder hot end
 [x] temperature sensor
 [V] limit swithes
 [V] sd reader
