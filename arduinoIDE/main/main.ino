@@ -1,6 +1,8 @@
 #include "sd.h"
+#include "gcodeRead.h"
 
 sdCard sdc(53);
+const char* path = "test.txt";
 
 void setup() {
   Serial.begin(9600);
@@ -10,6 +12,8 @@ void setup() {
   Serial.println(sdc.readLine("test.txt", 0));
   sdc.writeLine("test.txt", 2, "deez nuts");
   Serial.println(sdc.readLine("test.txt", 2));
+
+  executeGCline(path, 0);
 }
 
 void loop() {
