@@ -3,6 +3,7 @@
 
 sdCard sdc(53);
 const char* path = "test.txt";
+bool printing = false;
 
 void setup() {
   Serial.begin(9600);
@@ -13,6 +14,7 @@ void setup() {
   sdc.writeLine("test.txt", 2, "deez nuts");
   Serial.println(sdc.readLine("test.txt", 2));
 
+  printing = true;
   executeGCline(path, 0);
 }
 
