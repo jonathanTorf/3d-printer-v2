@@ -29,14 +29,21 @@ void gcMove(String line, int g) {
 
 void executeGCline(const char* path, int lineNum) {
   String line = sdc.readLine(path, lineNum);
+  int gIdx;
 
+  //remove commants.
   int bracketPos = line.indexOf("(");
   if (bracketPos != -1) 
     line.remove(bracketPos, line.indexOf(")") - bracketPos + 1);
   
-  int g = line[line.indexOf("G") + 1];
-  if (g == 0 || g == 1) gcMove(line, g);
+  //settings and movemant.
+  gIdx = line[line.indexOf("G")];
+  if (gIdx != -1) {
+    int g = line[gIdx + 1];
+    if (g == 0 || g == 1) gcMove(line, g);
+  }
 
+  //stop program.
   int m = line[line.indexOf("M") + 1];
   if (m == 30) printing = false;
 }
