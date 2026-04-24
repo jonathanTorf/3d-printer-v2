@@ -48,7 +48,7 @@ void executeGCline(const char* path, int lineNum) {
     //move
     if (g == 0 || g == 1) gcMove(line, g);
     //set position
-    if (g == 92) {
+    else if (g == 92) {
       int X = line[line.indexOf("X")];
       int Y = line[line.indexOf("Y")];
       int Z = line[line.indexOf("Z")];
@@ -60,8 +60,13 @@ void executeGCline(const char* path, int lineNum) {
       if (E != -1) posE = getGcVal(E + 1, line);
     }
     //return to home
-    if (g == 28) {
+    else if (g == 28) {
       
+    }
+
+    //unuidentified comand
+    else {
+      printing = false;
     }
   }
 
@@ -70,28 +75,33 @@ void executeGCline(const char* path, int lineNum) {
     //stop program
     if (m == 30) printing = false;
     //set bed temperature
-    if (m == 140) {
+    else if (m == 140) {
       int tprs = line.indexOf("S");
       float tprf = getGcVal(tprs, line);
       //set a bed target temp value to tprst
     }
     //read bed and hotend temperatures
-    if (m == 105) {
+    else if (m == 105) {
       
     }
     //set bed temperature and wait
-    if (m == 190) {
+    else if (m == 190) {
 
     }
     //set hotend temperature
-    if (m == 104) {
+    else if (m == 104) {
       int tprs = line.indexOf("S");
       float hotendTargetTemp = getGcVal(tprs, line);
     }
     //set hotend temperature and wait
-    if (m == 109) {
+    else if (m == 109) {
       int tprs = line.indexOf("S");
       float hotendTargetTemp = getGcVal(tprs, line);
+    }
+
+    //unuidentified comand
+    else {
+      printing = false;
     }
   }
 }
