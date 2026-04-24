@@ -19,11 +19,13 @@ void gcMove(String line, int g) {
   int Y = line[line.indexOf("Y")];
   int Z = line[line.indexOf("Z")];
   int F = line[line.indexOf("F")];
+  int E = line[line.indexOf("E")];
 
   if (X != -1) tarPosX = getGcVal(X + 1, line);
   if (Y != -1) tarPosY = getGcVal(Y + 1, line);
   if (Z != -1) tarPosZ = getGcVal(Z + 1, line);
   if (F != -1) F = getGcVal(F + 1, line);
+  if (F != -1) E = getGcVal(E + 1, line);
 
   //move function(when i make one) here.
 }
@@ -40,7 +42,6 @@ void executeGCline(const char* path, int lineNum) {
   if (semiCPos != -1) 
     line.remove(semiCPos, line.length());
   
-  //movemant.
   gIdx = line[line.indexOf("G")];
   if (gIdx != -1) {
     int g = line[gIdx + 1];
