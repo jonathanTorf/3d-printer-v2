@@ -2,7 +2,7 @@
 #include "gcodeRead.h"
 
 sdCard sdc(53);
-const char* path = "test.txt";
+const char* path = "3dbenchy.gx";
 bool printing = false;
 
 void setup() {
@@ -10,12 +10,10 @@ void setup() {
   Serial.println("program starting");
 
   sdc.begin();
-  Serial.println(sdc.readLine("test.txt", 0));
-  sdc.writeLine("test.txt", 2, "deez nuts");
-  Serial.println(sdc.readLine("test.txt", 2));
 
   printing = true;
-  executeGCline(path, 0);
+  //Serial.println(sdc.readLine(path, 0));
+  for (int i = 0; i < 45; i++) executeGCline(path, i);
 }
 
 void loop() {

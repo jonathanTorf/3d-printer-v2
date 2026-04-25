@@ -27,22 +27,31 @@ void gcMove(String line, int g) {
   if (F != -1) F = getGcVal(F + 1, line);
   if (F != -1) E = getGcVal(E + 1, line);
 
+  Serial.println("moving");
   //move function(when i make one) here.
 }
 
 void executeGCline(const char* path, int lineNum) {
   String line = sdc.readLine(path, lineNum);
-  int gIdx;
+  //Serial.println(line);
 
   //remove commants.
   int bracketPos = line.indexOf("(");
-  if (bracketPos != -1) 
+  if (bracketPos != -1) {
     line.remove(bracketPos, line.indexOf(")") - bracketPos + 1);
+    Serial.println("removing comment (()) ");
+    Serial.print(line);
+  }
+
   int semiCPos = line.indexOf(";");
-  if (semiCPos != -1) 
+  if (semiCPos != -1) {
     line.remove(semiCPos, line.length());
+    Serial.println("removing comment (;) ");
+    Serial.print(line);
+  }
+
+  int gIdx = line[line.indexOf("G")];
   
-  gIdx = line[line.indexOf("G")];
   if (gIdx != -1) {
     int g = line[gIdx + 1];
     //move
@@ -63,11 +72,7 @@ void executeGCline(const char* path, int lineNum) {
     else if (g == 28) {
       
     }
-
-    //unuidentified comand
-    else {
-      printing = false;
-    }
+    return;
   }
 
   if (line.indexOf("M") != -1) {
@@ -78,30 +83,35 @@ void executeGCline(const char* path, int lineNum) {
     else if (m == 140) {
       int tprs = line.indexOf("S");
       float tprf = getGcVal(tprs, line);
+      Serial.println("Setting bed temp: ");
+      Serial.print(tprf);
       //set a bed target temp value to tprst
     }
     //read bed and hotend temperatures
     else if (m == 105) {
-      
+      Serial.println("Checking temps");
     }
     //set bed temperature and wait
     else if (m == 190) {
-
+      Serial.println("Setting bed temp and waiting");
     }
     //set hotend temperature
     else if (m == 104) {
       int tprs = line.indexOf("S");
       float hotendTargetTemp = getGcVal(tprs, line);
+      Serial.println("Setting hotend temp");
     }
     //set hotend temperature and wait
     else if (m == 109) {
       int tprs = line.indexOf("S");
       float hotendTargetTemp = getGcVal(tprs, line);
+      Serial.println("Setting hotend temp and waiting");
     }
+    return;
+  }
 
     //unuidentified comand
-    else {
-      printing = false;
-    }
-  }
+    Serial.println("Unknown command: ");
+    Serial.print(line);
+    printing = false;
 }
