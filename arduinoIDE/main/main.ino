@@ -13,7 +13,11 @@ void setup() {
 
   printing = true;
   //Serial.println(sdc.readLine(path, 0));
-  for (int i = 0; i < 45; i++) executeGCline(path, i);
+  for (int i = 30; i < 46; i++) {
+    executeGCline(path, i);
+    // delay(200);
+  }
+  // executeGCline(path, 61);
 }
 
 void loop() {

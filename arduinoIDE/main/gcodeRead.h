@@ -6,26 +6,45 @@ float tarPosX, tarPosY, tarPosZ;
 int F;
 
 float getGcVal(int start, String line) {
-  String string = "";
-  for (int i = start; i < line.length(); i++) {
-    if (line[i] == " ") break;
-    string += line[i];
+  String value = "";
+
+  // Skip spaces (just in case)
+  while (start < line.length() && line[start] == ' ') {
+    start++;
   }
-  return string.toFloat();
+
+  // Read valid number characters
+  for (int i = start; i < line.length(); i++) {
+    char c = line[i];
+
+    if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
+      value += c;
+    } else {
+      break; // stop at first non-number character
+    }
+  }
+
+  // Validate result
+  if (value.length() == 0) {
+    // Serial.println("No number found");
+    return -1;
+  }
+
+  return value.toFloat();
 }
 
 void gcMove(String line, int g) {
-  int X = line[line.indexOf("X")];
-  int Y = line[line.indexOf("Y")];
-  int Z = line[line.indexOf("Z")];
-  int F = line[line.indexOf("F")];
-  int E = line[line.indexOf("E")];
+  int X = line.indexOf("X");
+  int Y = line.indexOf("Y");
+  int Z = line.indexOf("Z");
+  int E = line.indexOf("E");
+  int F = line.indexOf("F");
 
   if (X != -1) tarPosX = getGcVal(X + 1, line);
   if (Y != -1) tarPosY = getGcVal(Y + 1, line);
   if (Z != -1) tarPosZ = getGcVal(Z + 1, line);
   if (F != -1) F = getGcVal(F + 1, line);
-  if (F != -1) E = getGcVal(E + 1, line);
+  if (E != -1) E = getGcVal(E + 1, line);
 
   Serial.println("moving");
   //move function(when i make one) here.
@@ -50,18 +69,19 @@ void executeGCline(const char* path, int lineNum) {
     Serial.print(line);
   }
 
-  int gIdx = line[line.indexOf("G")];
+  int gIdx = line.indexOf("G");
   
   if (gIdx != -1) {
-    int g = line[gIdx + 1];
+    float g = getGcVal(gIdx + 1, line);
+    Serial.println(g);
     //move
     if (g == 0 || g == 1) gcMove(line, g);
     //set position
     else if (g == 92) {
-      int X = line[line.indexOf("X")];
-      int Y = line[line.indexOf("Y")];
-      int Z = line[line.indexOf("Z")];
-      int E = line[line.indexOf("E")];
+      int X = line.indexOf("X");
+      int Y = line.indexOf("Y");
+      int Z = line.indexOf("Z");
+      int E = line.indexOf("E");
 
       if (X != -1) posX = getGcVal(X + 1, line);
       if (Y != -1) posY = getGcVal(Y + 1, line);
@@ -111,7 +131,7 @@ void executeGCline(const char* path, int lineNum) {
   }
 
     //unuidentified comand
-    Serial.println("Unknown command: ");
+    Serial.println("Unknown command/comment line: ");
     Serial.print(line);
     printing = false;
 }
