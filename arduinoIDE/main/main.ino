@@ -18,9 +18,23 @@ void setup() {
     // delay(200);
   }
   // executeGCline(path, 61);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+
+  digitalWrite(10, HIGH);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(11, HIGH);
+    delayMicroseconds(2000);   // pulse width
+    digitalWrite(11, LOW);
+    delayMicroseconds(500);   // speed control
+  }
 
+  delay(1000);
+
+  // Reverse direction
+  digitalWrite(10, !digitalRead(10));
 }
