@@ -92,6 +92,14 @@ void executeGCline(const char* path, int lineNum) {
     else if (g == 28) {
       
     }
+    //fixed point cords
+    else if (g == 90) {
+
+    }
+    //offset cords
+    else if (g == 91) {
+
+    }
     return;
   }
 
@@ -126,6 +134,14 @@ void executeGCline(const char* path, int lineNum) {
       int tprs = line.indexOf("S");
       float hotendTargetTemp = getGcVal(tprs, line);
       Serial.println("Setting hotend temp and waiting");
+    }
+    //extruder fixed cords
+    else if (m == 82) {
+
+    }
+    //extruder offset cords
+    else if (m == 83) {
+      
     }
     return;
   }
