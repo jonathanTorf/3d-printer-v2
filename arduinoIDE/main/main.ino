@@ -14,7 +14,7 @@ void setup() {
   printing = true;
   //Serial.println(sdc.readLine(path, 0));
   for (int i = 30; i < 46; i++) {
-    executeGCline(path, i);
+    //executeGCline(path, i);
     // delay(200);
   }
   // executeGCline(path, 61);
@@ -28,7 +28,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   for (int i = 0; i < 200; i++) {
     digitalWrite(11, HIGH);
-    delayMicroseconds(2000);   // pulse width
+    delayMicroseconds(500);   // pulse width
     digitalWrite(11, LOW);
     delayMicroseconds(500);   // speed control
   }
