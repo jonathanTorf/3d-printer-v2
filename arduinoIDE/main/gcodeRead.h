@@ -1,4 +1,5 @@
 #include "sd.h"
+#include "movemant.h"
 extern sdCard sdc;
 extern bool printing;
 float posX, posY, posZ, posE;

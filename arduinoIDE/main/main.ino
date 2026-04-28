@@ -1,5 +1,6 @@
 #include "sd.h"
 #include "gcodeRead.h"
+#include "movemant.h"
 
 sdCard sdc(53);
 const char* path = "3dbenchy.gx";
@@ -17,24 +18,19 @@ void setup() {
     //executeGCline(path, i);
     // delay(200);
   }
-  // executeGCline(path, 61);
-  pinMode(11, OUTPUT);
-  pinMode(10, OUTPUT);
 
-  digitalWrite(10, HIGH);
+  movemantInit()
+  moveToHome();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  for (int i = 0; i < 200; i++) {
-    digitalWrite(11, HIGH);
-    delayMicroseconds(500);   // pulse width
-    digitalWrite(11, LOW);
-    delayMicroseconds(500);   // speed control
-  }
-
-  delay(1000);
-
-  // Reverse direction
-  digitalWrite(10, !digitalRead(10));
+/*  int STEP_PIN = 11;
+for (int i = 0; i < 200; i++) {
+  digitalWrite(STEP_PIN, HIGH);
+  delayMicroseconds(1500);
+  digitalWrite(STEP_PIN, LOW);
+  delayMicroseconds(1500);
+}
+delay(1000);
+  digitalWrite(DIR_PIN, !digitalRead(DIR_PIN));*/
 }
