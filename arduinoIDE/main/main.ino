@@ -2,6 +2,8 @@
 #include "gcodeRead.h"
 #include "movemant.h"
 
+const int lsy = 0; //remamber to set this later
+
 sdCard sdc(53);
 const char* path = "3dbenchy.gx";
 bool printing = false;
@@ -19,7 +21,7 @@ void setup() {
     // delay(200);
   }
 
-  movemantInit()
+  movemantInit();
   moveToHome();
 }
 
