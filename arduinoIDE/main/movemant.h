@@ -17,18 +17,20 @@ void movemantInit() {
 }
 
 void moveToHome() {
+  Serial.println("Homing");
   stepperY.setSpeed(defaultSpeed);
 
-  bool reachedX = false;
+  bool reachedX = true;
   bool reachedY = false;
-  bool reachedZ = false;
+  bool reachedZ = true;
   while (true) {
-    if (digitalRead(lsy)) reachedY = true;
+    if (!digitalRead(lsy)) reachedY = true;
 
     if (!reachedY) stepperY.runSpeed();
 
     if (reachedX && reachedY && reachedZ) break;
   }
+  Serial.println("Homing done");
 }
 
 #endif

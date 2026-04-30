@@ -2,7 +2,7 @@
 #include "gcodeRead.h"
 #include "movemant.h"
 
-const int lsy = 0; //remamber to set this later
+const int lsy = 2;
 
 sdCard sdc(53);
 const char* path = "3dbenchy.gx";
@@ -13,6 +13,7 @@ void setup() {
   Serial.println("program starting");
 
   sdc.begin();
+  pinMode(lsy, INPUT_PULLUP);
 
   printing = true;
   //Serial.println(sdc.readLine(path, 0));
