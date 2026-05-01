@@ -22,6 +22,7 @@ void setup() {
     // delay(200);
   }
 
+  delay(1000);
   movemantInit();
   moveToHome();
 }

@@ -8,7 +8,7 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 int maxSpeed = 1000;
 int acceleration = 500;
-int defaultSpeed = 500;
+int defaultSpeed = 1000;
 extern const int lsy;
 
 void movemantInit() {
@@ -29,6 +29,18 @@ void moveToHome() {
     if (!reachedY) stepperY.runSpeed();
 
     if (reachedX && reachedY && reachedZ) break;
+  }
+  stepperY.setSpeed(-200);
+  reachedX = false;
+  reachedZ = false;
+
+  delay(50);
+  while (true) {
+    if (digitalRead(lsy)) reachedY = false;
+
+    if (reachedY) stepperY.runSpeed();
+
+    if (!reachedX && !reachedY && !reachedZ) break;
   }
   Serial.println("Homing done");
 }
