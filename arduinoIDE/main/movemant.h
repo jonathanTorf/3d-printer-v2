@@ -57,7 +57,7 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
     deltaX = xPos;
     deltaY = yPos;
     deltaZ = zPos;
-    // deltaE = ePos;
+    deltaE = ePos;
 
     stepperY.moveTo(stepperY.currentPosition() + yPos);
   }
