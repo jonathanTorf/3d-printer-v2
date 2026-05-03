@@ -50,29 +50,36 @@ void moveToHome() {
   Serial.println("Homing done");
 }
 
-void moveTo(int xPos, int yPos, int zPos, int ePos, int F) {
-  int deltaY;
+void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F) {
+  int deltaX, deltaY, deltaZ, deltaE;
 
   if (reletiveCords) {
+    deltaX = xPos;
     deltaY = yPos;
+    deltaZ = zPos;
+    // deltaE = ePos;
 
     stepperY.moveTo(stepperY.currentPosition() + yPos);
   }
   else {
+    //deltaX = xPos - stepperX.currentPosition();
     deltaY = yPos - stepperY.currentPosition();
+    //deltaZ = zPos - stepperZ.currentPosition();
+    //deltaE = ePos - stepperE.currentPosition();
 
     stepperY.moveTo(yPos);
   }
   
-  float d = sqrt(sq(deltaY));
+  float d = sqrt(sq(deltaX) + sq(deltaY) + sq(deltaZ) + sq(deltaE));
   float t = d / F;
 
   stepperY.setMaxSpeed(deltaY / t);
 
-  while (true) {
-    stepperY.run();
+  bool reachedY = !moveY;
+  while (!reachedY) {
+    if (moveY) stepperY.run();
 
-    if (stepperY.distanceToGo() == 0) break;
+    if (stepperY.distanceToGo() == 0) reachedY = true;
   }
 }
 

@@ -3,7 +3,7 @@
 extern sdCard sdc;
 extern bool printing;
 float posX, posY, posZ, posE;
-float tarPosX, tarPosY, tarPosZ;
+// float tarPosX, tarPosY, tarPosZ;
 int F;
 
 float getGcVal(int start, String line) {
@@ -35,20 +35,36 @@ float getGcVal(int start, String line) {
 }
 
 void gcMove(String line, int g) {
+  bool mx = false;
+  bool my = false;
+  bool mz = false;
+  bool me = false;
   int X = line.indexOf("X");
   int Y = line.indexOf("Y");
   int Z = line.indexOf("Z");
   int E = line.indexOf("E");
   int F = line.indexOf("F");
 
-  if (X != -1) tarPosX = getGcVal(X + 1, line);
-  if (Y != -1) tarPosY = getGcVal(Y + 1, line);
-  if (Z != -1) tarPosZ = getGcVal(Z + 1, line);
+  if (X != -1) {
+    X = getGcVal(X + 1, line);
+    mx = true;
+  }
+  if (Y != -1) {
+    Y = getGcVal(Y + 1, line);
+    my = true;
+  }
+  if (Z != -1) {
+    Z = getGcVal(Z + 1, line);
+    mz = true;
+  }
+  if (E != -1) {
+    E = getGcVal(E + 1, line);
+    me = true;
+  }
   if (F != -1) F = getGcVal(F + 1, line);
-  if (E != -1) E = getGcVal(E + 1, line);
 
   Serial.println("moving");
-  //move function(when i make one) here.
+  moveTo(X, mx, Y, my, Z, mz, E, me, F);
 }
 
 void executeGCline(const char* path, int lineNum) {
