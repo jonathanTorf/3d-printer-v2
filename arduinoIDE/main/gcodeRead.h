@@ -91,15 +91,15 @@ void executeGCline(const char* path, int lineNum) {
     }
     //return to home
     else if (g == 28) {
-      
+      moveToHome();
     }
-    //fixed point cords
+    //fixed point/absolute cords
     else if (g == 90) {
-
+      reletiveCords = false;
     }
-    //offset cords
+    //offset/reletive cords
     else if (g == 91) {
-
+      reletiveCords = true;
     }
     return;
   }

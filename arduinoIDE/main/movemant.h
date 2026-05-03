@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Arduino.h"
 #ifndef MOVEMANT_H
 #define MOVEMANT_H
@@ -10,6 +11,9 @@ int maxSpeed = 1000;
 int acceleration = 500;
 int defaultSpeed = 1000;
 extern const int lsy;
+
+bool reletiveCords = true;
+int feedrate = 0;
 
 void movemantInit() {
   stepperY.setMaxSpeed(maxSpeed);
@@ -42,7 +46,34 @@ void moveToHome() {
 
     if (!reachedX && !reachedY && !reachedZ) break;
   }
+  stepperY.setCurrentPosition(0);
   Serial.println("Homing done");
+}
+
+void moveTo(int xPos, int yPos, int zPos, int ePos, int F) {
+  int deltaY;
+
+  if (reletiveCords) {
+    deltaY = yPos;
+
+    stepperY.moveTo(stepperY.currentPosition() + yPos);
+  }
+  else {
+    deltaY = yPos - stepperY.currentPosition();
+
+    stepperY.moveTo(yPos);
+  }
+  
+  float d = sqrt(sq(deltaY));
+  float t = d / F;
+
+  stepperY.setMaxSpeed(deltaY / t);
+
+  while (true) {
+    stepperY.run();
+
+    if (stepperY.distanceToGo() == 0) break;
+  }
 }
 
 #endif
