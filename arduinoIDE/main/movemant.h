@@ -1,7 +1,7 @@
 #include <math.h>
 #include "Arduino.h"
 #ifndef MOVEMANT_H
-#define MOVEMANT_H//c
+#define MOVEMANT_H
 
 #include <AccelStepper.h>
 
