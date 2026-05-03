@@ -1,7 +1,7 @@
 #include <math.h>
 #include "Arduino.h"
 #ifndef MOVEMANT_H
-#define MOVEMANT_H
+#define MOVEMANT_H//c
 
 #include <AccelStepper.h>
 
@@ -51,13 +51,31 @@ void moveToHome() {
 }
 
 void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F) {
+  Serial.println("");
+  Serial.println("Moving to: ");
+  if (moveX) {
+    Serial.println("X: ");
+    Serial.print(xPos);
+  }
+  if (moveY) {
+    Serial.print(" Y: ");
+    Serial.print(-yPos);
+  }
+  if (moveZ) {
+    Serial.print(" Z: ");
+    Serial.print(zPos);
+  }
+  if (moveE) {
+    Serial.print(" E: ");
+    Serial.print(ePos);
+  }
   int deltaX, deltaY, deltaZ, deltaE;
 
   if (reletiveCords) {
     deltaX = xPos;
     deltaY = yPos;
     deltaZ = zPos;
-    deltaE = ePos;
+    // deltaE = ePos;
 
     stepperY.moveTo(stepperY.currentPosition() + yPos);
   }
@@ -74,6 +92,11 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   float t = d / F;
 
   stepperY.setMaxSpeed(deltaY / t);
+
+  if (stepperY.targetPosition() >= 0) {
+    Serial.println("Movemant index out of range");
+    return;
+  }
 
   bool reachedY = !moveY;
   while (!reachedY) {
