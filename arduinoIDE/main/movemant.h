@@ -4,11 +4,15 @@
 #define MOVEMANT_H
 
 #include <AccelStepper.h>
+#include <MultiStepper.h>
 
+AccelStepper stepperX(AccelStepper::DRIVER, 9, 8);
 AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
+MultiStepper steppers;
+
 int maxSpeed = 1000;
-int acceleration = 750;
+int acceleration = 500;
 int defaultSpeed = 1000;
 extern const int lsy;
 
@@ -16,8 +20,15 @@ bool reletiveCords = true;
 int feedrate = 0;
 
 void movemantInit() {
+  stepperX.setSpeed(500);
+  stepperX.setMaxSpeed(maxSpeed);
+  stepperX.setAcceleration(acceleration);
+  stepperY.setSpeed(-500);
   stepperY.setMaxSpeed(maxSpeed);
   stepperY.setAcceleration(acceleration);
+
+  steppers.addStepper(stepperX);
+  steppers.addStepper(stepperY);
 }
 
 void moveToHome() {
@@ -34,7 +45,7 @@ void moveToHome() {
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperY.setSpeed(-200);
+  stepperY.setSpeed(-400);
   reachedX = false;
   reachedZ = false;
 
@@ -54,7 +65,7 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   Serial.println("");
   Serial.println("Moving to: ");
   if (moveX) {
-    Serial.println("X: ");
+    Serial.print(" X: ");
     Serial.print(xPos);
   }
   if (moveY) {
@@ -69,41 +80,15 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
     Serial.print(" E: ");
     Serial.print(ePos);
   }
-  int deltaX, deltaY, deltaZ, deltaE;
 
-  if (reletiveCords) {
-    deltaX = xPos;
-    deltaY = yPos;
-    deltaZ = zPos;
-    // deltaE = ePos;
+  long positions[2];
+  if (moveX) positions[0] = xPos;
+  if (moveY) positions[1] = yPos;
 
-    stepperY.moveTo(stepperY.currentPosition() + yPos);
-  }
-  else {
-    //deltaX = xPos - stepperX.currentPosition();
-    deltaY = yPos - stepperY.currentPosition();
-    //deltaZ = zPos - stepperZ.currentPosition();
-    //deltaE = ePos - stepperE.currentPosition();
-
-    stepperY.moveTo(yPos);
-  }
-  
-  float d = sqrt(sq(deltaX) + sq(deltaY) + sq(deltaZ) + sq(deltaE));
-  float t = d / F;
-
-  stepperY.setMaxSpeed(deltaY / t);
-
-  if (stepperY.targetPosition() >= 0) {
-    Serial.println("Movemant index out of range");
-    return;
-  }
-
-  bool reachedY = !moveY;
-  while (!reachedY) {
-    if (moveY) stepperY.run();
-
-    if (stepperY.distanceToGo() == 0) reachedY = true;
-  }
+  stepperX.setMaxSpeed(F);
+  stepperY.setMaxSpeed(F);
+  steppers.moveTo(positions);
+  steppers.runSpeedToPosition();
 }
 
 #endif

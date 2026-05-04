@@ -25,16 +25,9 @@ void setup() {
   delay(1000);
   movemantInit();
   moveToHome();
+  moveTo(1000, true, -2000, true, 0, false, 0, false, 1000);
 }
 
 void loop() {
-/*  int STEP_PIN = 11;
-for (int i = 0; i < 200; i++) {
-  digitalWrite(STEP_PIN, HIGH);
-  delayMicroseconds(1500);
-  digitalWrite(STEP_PIN, LOW);
-  delayMicroseconds(1500);
-}
-delay(1000);
-  digitalWrite(DIR_PIN, !digitalRead(DIR_PIN));*/
+
 }
