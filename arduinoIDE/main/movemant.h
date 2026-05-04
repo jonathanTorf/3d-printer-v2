@@ -8,7 +8,7 @@
 AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 int maxSpeed = 1000;
-int acceleration = 500;
+int acceleration = 750;
 int defaultSpeed = 1000;
 extern const int lsy;
 
