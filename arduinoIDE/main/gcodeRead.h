@@ -62,6 +62,7 @@ void gcMove(String line, int g) {
     me = true;
   }
   if (F != -1) F = getGcVal(F + 1, line);
+  else F = maxSpeed;
 
   Serial.println("moving");
   moveTo(X, mx, Y, my, Z, mz, E, me, F);

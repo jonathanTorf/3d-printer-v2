@@ -82,8 +82,10 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   }
 
   long positions[2];
-  if (moveX) positions[0] = xPos;
-  if (moveY) positions[1] = yPos;
+  if (reletiveCords) {
+    if (moveX) positions[0] = xPos + stepperX.currentPosition();
+    if (moveY) positions[1] = yPos + stepperY.currentPosition();
+  }
 
   stepperX.setMaxSpeed(F);
   stepperY.setMaxSpeed(F);
