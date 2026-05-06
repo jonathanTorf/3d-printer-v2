@@ -24,17 +24,24 @@ void setup() {
 
   // delay(1000);
   movemantInit();
-  /* moveToHome();
-  moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
-  moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
+  moveToHome();
+  // moveTo(0, true, 0, false, 0, false, 0, false, 1000);
+  delay(1000);
+  moveTo(1000, false, 2000, true, 0, false, 0, false, 1000);
+  delay(200);
+  moveTo(1000, false, -1000, true, 0, false, 0, false, 750);
+  delay(200);
+  moveTo(1000, false, 2000, true, 0, false, 0, false, 1000);
+  /*moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
 
-  for (int i = 42; i < 46; i++) {
+  /*for (int i = 42; i < 46; i++) {
     executeGCline(path, i);
     delay(1000);
   }*/
-  stepperY.setSpeed(200);
+  //stepperY.setSpeed(100);
+  //digitalWrite(10, LOW);
 }
 
 void loop() {
-  stepperY.runSpeed();
+
 }

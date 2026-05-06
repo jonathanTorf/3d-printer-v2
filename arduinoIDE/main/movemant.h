@@ -13,14 +13,14 @@ MultiStepper steppers;
 
 int maxSpeed = 1000;
 int acceleration = 500;
-int defaultSpeed = 1000;
+int defaultSpeed = 750;
 extern const int lsy;
 
 bool reletiveCords = true;
 int feedrate = 0;
 
 void movemantInit() {
-  stepperX.setSpeed(500);
+  stepperX.setSpeed(200);
   stepperX.setMaxSpeed(maxSpeed);
   stepperX.setAcceleration(acceleration);
   stepperY.setSpeed(-500);
@@ -33,7 +33,7 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
-  stepperY.setSpeed(defaultSpeed);
+  stepperY.setSpeed(-defaultSpeed);
 
   bool reachedX = true;
   bool reachedY = false;
@@ -45,7 +45,7 @@ void moveToHome() {
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperY.setSpeed(-400);
+  stepperY.setSpeed(200);
   reachedX = false;
   reachedZ = false;
 
@@ -84,7 +84,9 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   long positions[2];
   if (reletiveCords) {
     if (moveX) positions[0] = xPos + stepperX.currentPosition();
+    else positions[0] = stepperX.currentPosition();
     if (moveY) positions[1] = yPos + stepperY.currentPosition();
+    else positions[1] = stepperY.currentPosition();
   }
 
   stepperX.setMaxSpeed(F);
