@@ -17,7 +17,9 @@ void setup() {
   pinMode(12, OUTPUT);
   pinMode(11, OUTPUT);
   pinMode(10, OUTPUT);
+  pinMode(7, OUTPUT);
   digitalWrite(12, LOW);
+  digitalWrite(7, LOW);
 
   printing = true;
   //Serial.println(sdc.readLine(path, 0));
@@ -26,12 +28,12 @@ void setup() {
   movemantInit();
   moveToHome();
   // moveTo(0, true, 0, false, 0, false, 0, false, 1000);
-  delay(1000);
-  moveTo(1000, false, 2000, true, 0, false, 0, false, 1000);
   delay(200);
-  moveTo(1000, false, -1000, true, 0, false, 0, false, 750);
+  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
   delay(200);
-  moveTo(1000, false, 2000, true, 0, false, 0, false, 1000);
+  moveTo(1000, true, -1000, true, 0, false, 0, false, 750);
+  delay(200);
+  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
   /*moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
 
   /*for (int i = 42; i < 46; i++) {

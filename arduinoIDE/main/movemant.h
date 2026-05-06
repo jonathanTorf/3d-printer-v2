@@ -6,7 +6,7 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
-AccelStepper stepperX(AccelStepper::DRIVER, 9, 8);
+AccelStepper stepperX(AccelStepper::DRIVER, 8, 9);
 AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 MultiStepper steppers;
