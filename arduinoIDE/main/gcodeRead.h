@@ -55,11 +55,11 @@ void gcMove(String line, int g) {
   }
   if (Z != -1) {
     Z = getGcVal(Z + 1, line);
-    mz = true;
+    //mz = true;
   }
   if (E != -1) {
     E = getGcVal(E + 1, line);
-    me = true;
+    //me = true;
   }
   if (F != -1) F = getGcVal(F + 1, line);
   else F = maxSpeed;
@@ -113,10 +113,12 @@ void executeGCline(const char* path, int lineNum) {
     //fixed point/absolute cords
     else if (g == 90) {
       reletiveCords = false;
+      Serial.println("Cords mode set to absolute.")
     }
     //offset/reletive cords
     else if (g == 91) {
       reletiveCords = true;
+      Serial.println("Cords mode set to reletive.")
     }
     return;
   }

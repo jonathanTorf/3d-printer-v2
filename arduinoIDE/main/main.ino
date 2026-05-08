@@ -28,13 +28,15 @@ void setup() {
 
   // delay(1000);
   movemantInit();
-  moveToHome();
-  moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
-  moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
-  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
-  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
-  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
-  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  if (false) {
+    moveToHome();
+    moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
+    moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
+    moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+    moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+    moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+    moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  }
   /*delay(200);
   moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
   delay(200);
