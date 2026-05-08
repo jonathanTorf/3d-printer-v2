@@ -2,7 +2,8 @@
 #include "gcodeRead.h"
 #include "movemant.h"
 
-const int lsy = 2;
+const int lsx = 2;
+const int lsy = 3;
 
 sdCard sdc(53);
 const char* path = "3dbenchy.gx";
@@ -13,6 +14,7 @@ void setup() {
   Serial.println("program starting");
 
   sdc.begin();
+  pinMode(lsx, INPUT_PULLUP);
   pinMode(lsy, INPUT_PULLUP);
   pinMode(12, OUTPUT);
   pinMode(11, OUTPUT);
@@ -27,13 +29,18 @@ void setup() {
   // delay(1000);
   movemantInit();
   moveToHome();
-  // moveTo(0, true, 0, false, 0, false, 0, false, 1000);
-  delay(200);
+  moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
+  moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
+  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
+  /*delay(200);
   moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
   delay(200);
   moveTo(1000, true, -1000, true, 0, false, 0, false, 750);
   delay(200);
-  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
+  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);*/
   /*moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
 
   /*for (int i = 42; i < 46; i++) {
@@ -45,5 +52,6 @@ void setup() {
 }
 
 void loop() {
-
+  //Serial.println(digitalRead(lsx));
+  //delay(1000);
 }

@@ -14,16 +14,17 @@ MultiStepper steppers;
 int maxSpeed = 1000;
 int acceleration = 500;
 int defaultSpeed = 750;
+extern const int lsx;
 extern const int lsy;
 
 bool reletiveCords = true;
 int feedrate = 0;
 
 void movemantInit() {
-  stepperX.setSpeed(200);
+  stepperX.setSpeed(defaultSpeed);
   stepperX.setMaxSpeed(maxSpeed);
   stepperX.setAcceleration(acceleration);
-  stepperY.setSpeed(-500);
+  stepperY.setSpeed(-defaultSpeed);
   stepperY.setMaxSpeed(maxSpeed);
   stepperY.setAcceleration(acceleration);
 
@@ -33,35 +34,41 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
-  stepperY.setSpeed(-defaultSpeed);
+  stepperX.setSpeed(defaultSpeed);
+  stepperY.setSpeed(defaultSpeed);
 
-  bool reachedX = true;
+  bool reachedX = false;
   bool reachedY = false;
   bool reachedZ = true;
   while (true) {
+    if (!digitalRead(lsx)) reachedX = true;
     if (!digitalRead(lsy)) reachedY = true;
 
+    if (!reachedX) stepperX.runSpeed();
     if (!reachedY) stepperY.runSpeed();
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperY.setSpeed(200);
-  reachedX = false;
+  stepperX.setSpeed(-500);
+  stepperY.setSpeed(-500);
   reachedZ = false;
 
   delay(50);
   while (true) {
+    if (digitalRead(lsx)) reachedX = false;
     if (digitalRead(lsy)) reachedY = false;
 
+    if (reachedX) stepperX.runSpeed();
     if (reachedY) stepperY.runSpeed();
 
     if (!reachedX && !reachedY && !reachedZ) break;
   }
+  stepperX.setCurrentPosition(0);
   stepperY.setCurrentPosition(0);
   Serial.println("Homing done");
 }
 
-void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F) {
+void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F, bool addDelay = true) {
   Serial.println("");
   Serial.println("Moving to: ");
   if (moveX) {
@@ -93,6 +100,8 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   stepperY.setMaxSpeed(F);
   steppers.moveTo(positions);
   steppers.runSpeedToPosition();
+
+  if (addDelay) delay(200);
 }
 
 #endif
