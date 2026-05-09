@@ -27,11 +27,13 @@ void setup() {
 
   movemantInit();
 
-  for (int l = 0; l < 80; l++) {
+  //executeGCline(path, 66);
+  for (int l = 0; l < 115; l++) {
     //if (!printing) break;
     if (l != 1) executeGCline(path, l);
-    delay(100);
+    delay(200);
   }
+  moveToHome();
   Serial.println("Finished printing");
 }
 

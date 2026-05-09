@@ -20,12 +20,6 @@ float getGcVal(int start, String line) {
     start++;
   }
 
-  // No number found
-  if (start >= line.length()) {
-    Serial.println("No number found");
-    return -1;
-  }
-
   // Read number
   while (start < line.length()) {
     char c = line[start];
@@ -83,7 +77,7 @@ void executeGCline(const char* path, int lineNum) {
   String line = sdc.readLine(path, lineNum);
   Serial.println("");
   Serial.print("Exexuting line: ''");
-  Serial.print(line);
+  Serial.print(line + 1);
   Serial.print("'' as line: ");
   Serial.println(lineNum);
 

@@ -14,6 +14,8 @@ MultiStepper steppers;
 float stmmx = 1750;
 float stmmy = 85;
 
+float size = 160;
+
 int maxSpeed = 1000;
 int acceleration = 500;
 int defaultSpeed = 1000;
@@ -37,7 +39,7 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
-  stepperX.setSpeed(2000);
+  stepperX.setSpeed(7500);
   stepperY.setSpeed(defaultSpeed);
 
   bool reachedX = false;
@@ -80,7 +82,7 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
   }
   if (moveY) {
     Serial.print(" Y: ");
-    Serial.print(-yPos);
+    Serial.print(yPos);
   }
   if (moveZ) {
     Serial.print(" Z: ");
@@ -95,15 +97,15 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
 
   long positions[2];
   if (reletiveCords) {
-    if (moveX) positions[0] = xPos * stmmx + stepperX.currentPosition();
+    if (moveX) positions[0] = (xPos - size / 2) * stmmx + stepperX.currentPosition();
     else positions[0] = stepperX.currentPosition();
-    if (moveY) positions[1] = yPos * stmmy + stepperY.currentPosition();
+    if (moveY) positions[1] = (yPos - size / 2) * stmmy + stepperY.currentPosition();
     else positions[1] = stepperY.currentPosition();
   }
   else {
-    if (moveX) positions[0] = xPos * stmmx;
+    if (moveX) positions[0] = (xPos - size / 2) * stmmx;
     else positions[0] = stepperX.currentPosition();
-    if (moveY) positions[1] = yPos * stmmy;
+    if (moveY) positions[1] = (yPos - size / 2) * stmmy;
     else positions[1] = stepperY.currentPosition();
   }
 
