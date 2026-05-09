@@ -107,7 +107,7 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
     else positions[1] = stepperY.currentPosition();
   }
 
-  if (positions[0] > 0 || positions[1] > 0) {
+  if (positions[0] > 0 || positions[1] > 0 || F == -1) {
     Serial.println("Movemant set to outside of range, terminating command.");
     return;
   }

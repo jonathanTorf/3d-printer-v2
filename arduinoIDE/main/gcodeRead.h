@@ -9,25 +9,34 @@ int F;
 float getGcVal(int start, String line) {
   String value = "";
 
-  while (start < line.length() && line[start] == ' ') {
+  // Find start of number
+  while (start < line.length()) {
+    char c = line[start];
+
+    if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
+      break;
+    }
+
     start++;
   }
 
-  for (int i = start; i < line.length(); i++) {
-    char c = line[i];
+  // No number found
+  if (start >= line.length()) {
+    Serial.println("No number found");
+    return -1;
+  }
+
+  // Read number
+  while (start < line.length()) {
+    char c = line[start];
 
     if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
       value += c;
-    } else {
+      start++;
+    }
+    else {
       break;
     }
-  }
-
-  // Validate result
-  if (value.length() == 0) {
-    Serial.println("No number found: ");
-    Serial.println(value);
-    return -1;
   }
 
   return value.toFloat();
@@ -60,7 +69,10 @@ void gcMove(String line, int g) {
     E = getGcVal(E + 1, line);
     //me = true;
   }
-  if (F != -1) F = getGcVal(F + 1, line);
+  if (F != -1) {
+    F = getGcVal(F + 1, line);
+    maxSpeed = F;
+  }
   else F = maxSpeed;
 
   // Serial.println("moving");
@@ -69,7 +81,11 @@ void gcMove(String line, int g) {
 
 void executeGCline(const char* path, int lineNum) {
   String line = sdc.readLine(path, lineNum);
-  //Serial.println(line);
+  Serial.println("");
+  Serial.print("Exexuting line: ''");
+  Serial.print(line);
+  Serial.print("'' as line: ");
+  Serial.println(lineNum);
 
   //remove commants.
   int bracketPos = line.indexOf("(");
@@ -89,7 +105,8 @@ void executeGCline(const char* path, int lineNum) {
   int gIdx = line.indexOf("G");
   
   if (gIdx != -1) {
-    float g = getGcVal(gIdx + 1, line);
+    float g = getGcVal(gIdx, line);
+    Serial.print("G: ");
     Serial.println(g);
     //move
     if (g == 0 || g == 1) gcMove(line, g);
