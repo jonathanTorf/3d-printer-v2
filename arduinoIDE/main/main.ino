@@ -6,14 +6,16 @@ const int lsx = 2;
 const int lsy = 3;
 
 sdCard sdc(53);
-const char* path = "3dbenchy.gx";
-bool printing = false;
+// const char* path = "3dbenchy.gx";
+const char* path = "strecher.gx";
+bool printing = true;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("program starting");
 
   sdc.begin();
+
   pinMode(lsx, INPUT_PULLUP);
   pinMode(lsy, INPUT_PULLUP);
   pinMode(12, OUTPUT);
@@ -28,10 +30,10 @@ void setup() {
 
   // delay(1000);
   movemantInit();
-  if (true) {
+  if (false) {
     moveToHome();
     delay(1000);
-    moveTo(-50, true, -2000, false, 0, false, 0, false, 200);
+    moveTo(-10, false, -10, true, 0, false, 0, false, 200);
     if (false) {
       moveTo(-2000, true, -2000, true, 0, false, 0, false, 1000);
       moveTo(-2000, true, -2000, false, 0, false, 0, false, 1000);
@@ -54,6 +56,13 @@ void setup() {
   }*/
   //stepperY.setSpeed(100);
   //digitalWrite(10, LOW);
+
+  for (int l = 0; l < 80; l++) {
+    //if (!printing) break;
+    if (l != 1) executeGCline(path, l);
+    delay(100);
+  }
+  Serial.println("Finished printing");
 }
 
 void loop() {

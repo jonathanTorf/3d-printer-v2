@@ -9,25 +9,24 @@ int F;
 float getGcVal(int start, String line) {
   String value = "";
 
-  // Skip spaces (just in case)
   while (start < line.length() && line[start] == ' ') {
     start++;
   }
 
-  // Read valid number characters
   for (int i = start; i < line.length(); i++) {
     char c = line[i];
 
     if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
       value += c;
     } else {
-      break; // stop at first non-number character
+      break;
     }
   }
 
   // Validate result
   if (value.length() == 0) {
-    // Serial.println("No number found");
+    Serial.println("No number found: ");
+    Serial.println(value);
     return -1;
   }
 
@@ -64,7 +63,7 @@ void gcMove(String line, int g) {
   if (F != -1) F = getGcVal(F + 1, line);
   else F = maxSpeed;
 
-  Serial.println("moving");
+  // Serial.println("moving");
   moveTo(X, mx, Y, my, Z, mz, E, me, F);
 }
 
