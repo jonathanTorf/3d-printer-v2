@@ -11,6 +11,8 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 MultiStepper steppers;
 
+float stmmx = 1500;
+
 int maxSpeed = 1000;
 int acceleration = 500;
 int defaultSpeed = 750;
@@ -49,8 +51,8 @@ void moveToHome() {
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperX.setSpeed(-500);
-  stepperY.setSpeed(-500);
+  stepperX.setSpeed(-defaultSpeed);
+  stepperY.setSpeed(-defaultSpeed);
   reachedZ = false;
 
   delay(50);
@@ -90,13 +92,13 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
 
   long positions[2];
   if (reletiveCords) {
-    if (moveX) positions[0] = xPos + stepperX.currentPosition();
+    if (moveX) positions[0] = xPos * stmmx + stepperX.currentPosition();
     else positions[0] = stepperX.currentPosition();
     if (moveY) positions[1] = yPos + stepperY.currentPosition();
     else positions[1] = stepperY.currentPosition();
   }
 
-  stepperX.setMaxSpeed(F);
+  stepperX.setMaxSpeed(F * stmmx / 60);
   stepperY.setMaxSpeed(F);
   steppers.moveTo(positions);
   steppers.runSpeedToPosition();
