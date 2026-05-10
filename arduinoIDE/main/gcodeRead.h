@@ -9,26 +9,28 @@ int F;
 float getGcVal(int start, String line) {
   String value = "";
 
-  // Skip spaces (just in case)
-  while (start < line.length() && line[start] == ' ') {
+  // Find start of number
+  while (start < line.length()) {
+    char c = line[start];
+
+    if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
+      break;
+    }
+
     start++;
   }
 
-  // Read valid number characters
-  for (int i = start; i < line.length(); i++) {
-    char c = line[i];
+  // Read number
+  while (start < line.length()) {
+    char c = line[start];
 
     if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
       value += c;
-    } else {
-      break; // stop at first non-number character
+      start++;
     }
-  }
-
-  // Validate result
-  if (value.length() == 0) {
-    // Serial.println("No number found");
-    return -1;
+    else {
+      break;
+    }
   }
 
   return value.toFloat();
@@ -55,22 +57,29 @@ void gcMove(String line, int g) {
   }
   if (Z != -1) {
     Z = getGcVal(Z + 1, line);
-    mz = true;
+    //mz = true;
   }
   if (E != -1) {
     E = getGcVal(E + 1, line);
-    me = true;
+    //me = true;
   }
-  if (F != -1) F = getGcVal(F + 1, line);
+  if (F != -1) {
+    F = getGcVal(F + 1, line);
+    maxSpeed = F;
+  }
   else F = maxSpeed;
 
-  Serial.println("moving");
+  // Serial.println("moving");
   moveTo(X, mx, Y, my, Z, mz, E, me, F);
 }
 
 void executeGCline(const char* path, int lineNum) {
   String line = sdc.readLine(path, lineNum);
-  //Serial.println(line);
+  Serial.println("");
+  Serial.print("Exexuting line: ''");
+  Serial.print(line + 1);
+  Serial.print("'' as line: ");
+  Serial.println(lineNum);
 
   //remove commants.
   int bracketPos = line.indexOf("(");
@@ -90,7 +99,8 @@ void executeGCline(const char* path, int lineNum) {
   int gIdx = line.indexOf("G");
   
   if (gIdx != -1) {
-    float g = getGcVal(gIdx + 1, line);
+    float g = getGcVal(gIdx, line);
+    Serial.print("G: ");
     Serial.println(g);
     //move
     if (g == 0 || g == 1) gcMove(line, g);
@@ -113,10 +123,12 @@ void executeGCline(const char* path, int lineNum) {
     //fixed point/absolute cords
     else if (g == 90) {
       reletiveCords = false;
+      Serial.println("Cords mode set to absolute.");
     }
     //offset/reletive cords
     else if (g == 91) {
       reletiveCords = true;
+      Serial.println("Cords mode set to reletive.");
     }
     return;
   }

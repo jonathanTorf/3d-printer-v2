@@ -11,19 +11,25 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 MultiStepper steppers;
 
+float stmmx = 1750;
+float stmmy = 85;
+
+float size = 160;
+
 int maxSpeed = 1000;
 int acceleration = 500;
-int defaultSpeed = 750;
+int defaultSpeed = 1000;
+extern const int lsx;
 extern const int lsy;
 
 bool reletiveCords = true;
 int feedrate = 0;
 
 void movemantInit() {
-  stepperX.setSpeed(200);
+  stepperX.setSpeed(defaultSpeed);
   stepperX.setMaxSpeed(maxSpeed);
   stepperX.setAcceleration(acceleration);
-  stepperY.setSpeed(-500);
+  stepperY.setSpeed(-defaultSpeed);
   stepperY.setMaxSpeed(maxSpeed);
   stepperY.setAcceleration(acceleration);
 
@@ -33,44 +39,50 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
-  stepperY.setSpeed(-defaultSpeed);
+  stepperX.setSpeed(7500);
+  stepperY.setSpeed(defaultSpeed);
 
-  bool reachedX = true;
+  bool reachedX = false;
   bool reachedY = false;
   bool reachedZ = true;
   while (true) {
+    if (!digitalRead(lsx)) reachedX = true;
     if (!digitalRead(lsy)) reachedY = true;
 
+    if (!reachedX) stepperX.runSpeed();
     if (!reachedY) stepperY.runSpeed();
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperY.setSpeed(200);
-  reachedX = false;
+  stepperX.setSpeed(-defaultSpeed);
+  stepperY.setSpeed(-defaultSpeed);
   reachedZ = false;
 
   delay(50);
   while (true) {
+    if (digitalRead(lsx)) reachedX = false;
     if (digitalRead(lsy)) reachedY = false;
 
+    if (reachedX) stepperX.runSpeed();
     if (reachedY) stepperY.runSpeed();
 
     if (!reachedX && !reachedY && !reachedZ) break;
   }
+  stepperX.setCurrentPosition(0);
   stepperY.setCurrentPosition(0);
   Serial.println("Homing done");
 }
 
-void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F) {
+void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F, bool addDelay = true) {
   Serial.println("");
-  Serial.println("Moving to: ");
+  Serial.print("Moving to: ");
   if (moveX) {
     Serial.print(" X: ");
     Serial.print(xPos);
   }
   if (moveY) {
     Serial.print(" Y: ");
-    Serial.print(-yPos);
+    Serial.print(yPos);
   }
   if (moveZ) {
     Serial.print(" Z: ");
@@ -80,19 +92,34 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
     Serial.print(" E: ");
     Serial.print(ePos);
   }
+  Serial.print(" At feedrate: ");
+  Serial.println(F);
 
   long positions[2];
   if (reletiveCords) {
-    if (moveX) positions[0] = xPos + stepperX.currentPosition();
+    if (moveX) positions[0] = (xPos - size / 2) * stmmx + stepperX.currentPosition();
     else positions[0] = stepperX.currentPosition();
-    if (moveY) positions[1] = yPos + stepperY.currentPosition();
+    if (moveY) positions[1] = (yPos - size / 2) * stmmy + stepperY.currentPosition();
+    else positions[1] = stepperY.currentPosition();
+  }
+  else {
+    if (moveX) positions[0] = (xPos - size / 2) * stmmx;
+    else positions[0] = stepperX.currentPosition();
+    if (moveY) positions[1] = (yPos - size / 2) * stmmy;
     else positions[1] = stepperY.currentPosition();
   }
 
-  stepperX.setMaxSpeed(F);
-  stepperY.setMaxSpeed(F);
+  if (positions[0] > 0 || positions[1] > 0 || F == -1) {
+    Serial.println("Movemant set to outside of range, terminating command.");
+    return;
+  }
+
+  stepperX.setMaxSpeed(F * stmmx / 60);
+  stepperY.setMaxSpeed(F * stmmy / 60);
   steppers.moveTo(positions);
   steppers.runSpeedToPosition();
+
+  if (addDelay) delay(200);
 }
 
 #endif

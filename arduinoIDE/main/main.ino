@@ -2,17 +2,21 @@
 #include "gcodeRead.h"
 #include "movemant.h"
 
-const int lsy = 2;
+const int lsx = 2;
+const int lsy = 3;
 
 sdCard sdc(53);
 const char* path = "3dbenchy.gx";
-bool printing = false;
+//const char* path = "strecher.gx";
+bool printing = true;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("program starting");
 
   sdc.begin();
+
+  pinMode(lsx, INPUT_PULLUP);
   pinMode(lsy, INPUT_PULLUP);
   pinMode(12, OUTPUT);
   pinMode(11, OUTPUT);
@@ -21,27 +25,16 @@ void setup() {
   digitalWrite(12, LOW);
   digitalWrite(7, LOW);
 
-  printing = true;
-  //Serial.println(sdc.readLine(path, 0));
-
-  // delay(1000);
   movemantInit();
-  moveToHome();
-  // moveTo(0, true, 0, false, 0, false, 0, false, 1000);
-  delay(200);
-  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
-  delay(200);
-  moveTo(1000, true, -1000, true, 0, false, 0, false, 750);
-  delay(200);
-  moveTo(1000, true, 2000, true, 0, false, 0, false, 1000);
-  /*moveTo(2000, true, -2000, true, 0, false, 0, false, 1000);
 
-  /*for (int i = 42; i < 46; i++) {
-    executeGCline(path, i);
-    delay(1000);
-  }*/
-  //stepperY.setSpeed(100);
-  //digitalWrite(10, LOW);
+  //executeGCline(path, 66);
+  for (int l = 0; l < 115; l++) {
+    //if (!printing) break;
+    if (l != 1) executeGCline(path, l);
+    delay(200);
+  }
+  moveToHome();
+  Serial.println("Finished printing");
 }
 
 void loop() {
