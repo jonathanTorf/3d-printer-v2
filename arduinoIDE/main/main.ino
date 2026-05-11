@@ -28,7 +28,7 @@ void setup() {
   movemantInit();
 
   //executeGCline(path, 66);
-  for (int l = 0; l < 115; l++) {
+  for (int l = 0; l < 150; l++) {
     //if (!printing) break;
     if (l != 1) executeGCline(path, l);
     delay(200);
