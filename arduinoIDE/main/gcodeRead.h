@@ -100,8 +100,9 @@ void executeGCline(const char* path, int lineNum) {
   
   if (gIdx != -1) {
     float g = getGcVal(gIdx, line);
-    Serial.print("G: ");
-    Serial.println(g);
+    //Serial.print("G: ");
+    //Serial.println(g);
+    
     //move
     if (g == 0 || g == 1) gcMove(line, g);
     //set position
