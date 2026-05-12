@@ -73,7 +73,7 @@ void moveToHome() {
   Serial.println("Homing done");
 }
 
-void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, int ePos, bool moveE, int F, bool addDelay = true) {
+void moveTo(float xPos, bool moveX, float yPos, bool moveY, float zPos, bool moveZ, float ePos, bool moveE, float F, bool addDelay = true) {
   Serial.println("");
   Serial.print("Moving to: ");
   if (moveX) {
@@ -97,9 +97,9 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
 
   long positions[2];
   if (reletiveCords) {
-    if (moveX) positions[0] = (xPos - size / 2) * stmmx + stepperX.currentPosition();
+    if (moveX) positions[0] = xPos * stmmx + stepperX.currentPosition();
     else positions[0] = stepperX.currentPosition();
-    if (moveY) positions[1] = (yPos - size / 2) * stmmy + stepperY.currentPosition();
+    if (moveY) positions[1] = yPos * stmmy + stepperY.currentPosition();
     else positions[1] = stepperY.currentPosition();
   }
   else {
@@ -114,10 +114,15 @@ void moveTo(int xPos, bool moveX, int yPos, bool moveY, int zPos, bool moveZ, in
     return;
   }
 
-  stepperX.setMaxSpeed(F * stmmx / 60);
-  stepperY.setMaxSpeed(F * stmmy / 60);
+  float maxStepSpeed = (F / 60.0) * max(stmmx, stmmy);
+  stepperX.setMaxSpeed(maxStepSpeed);
+  stepperY.setMaxSpeed(maxStepSpeed);
+
   steppers.moveTo(positions);
-  steppers.runSpeedToPosition();
+
+  while (stepperX.distanceToGo() != 0 || stepperY.distanceToGo() != 0) {
+    steppers.run();
+  }
 
   if (addDelay) delay(200);
 }
