@@ -2,6 +2,7 @@
 #include "movemant.h"
 extern sdCard sdc;
 extern bool printing;
+extern const int enx, eny;
 float posX, posY, posZ, posE;
 // float tarPosX, tarPosY, tarPosZ;
 int F;
@@ -100,85 +101,113 @@ void executeGCline(const char* path, int lineNum) {
   
   if (gIdx != -1) {
     float g = getGcVal(gIdx, line);
-    //Serial.print("G: ");
-    //Serial.println(g);
-    
-    //move
-    if (g == 0 || g == 1) gcMove(line, g);
-    //set position
-    else if (g == 92) {
-      int X = line.indexOf("X");
-      int Y = line.indexOf("Y");
-      int Z = line.indexOf("Z");
-      int E = line.indexOf("E");
 
-      if (X != -1) posX = getGcVal(X + 1, line);
-      if (Y != -1) posY = getGcVal(Y + 1, line);
-      if (Z != -1) posZ = getGcVal(Z + 1, line);
-      if (E != -1) posE = getGcVal(E + 1, line);
+    switch ((int)g) {
+      //move
+      case 0:
+      case 1:
+        gcMove(line, g);
+        break;
+
+      //set position
+      case 92: {
+        int X = line.indexOf("X");
+        int Y = line.indexOf("Y");
+        int Z = line.indexOf("Z");
+        int E = line.indexOf("E");
+
+        if (X != -1) posX = getGcVal(X + 1, line);
+        if (Y != -1) posY = getGcVal(Y + 1, line);
+        if (Z != -1) posZ = getGcVal(Z + 1, line);
+        if (E != -1) posE = getGcVal(E + 1, line);
+        break;
+      }
+
+      //return to home
+      case 28:
+        moveToHome();
+        break;
+
+      //fixed point/absolute cords
+      case 90:
+        reletiveCords = false;
+        Serial.println("Cords mode set to absolute.");
+        break;
+
+      //offset/reletive cords
+      case 91:
+        reletiveCords = true;
+        Serial.println("Cords mode set to reletive.");
+        break;
     }
-    //return to home
-    else if (g == 28) {
-      moveToHome();
-    }
-    //fixed point/absolute cords
-    else if (g == 90) {
-      reletiveCords = false;
-      Serial.println("Cords mode set to absolute.");
-    }
-    //offset/reletive cords
-    else if (g == 91) {
-      reletiveCords = true;
-      Serial.println("Cords mode set to reletive.");
-    }
+
     return;
   }
 
   if (line.indexOf("M") != -1) {
     int m = line[line.indexOf("M") + 1];
-    //stop program
-    if (m == 30) printing = false;
-    //set bed temperature
-    else if (m == 140) {
-      int tprs = line.indexOf("S");
-      float tprf = getGcVal(tprs, line);
-      Serial.println("Setting bed temp: ");
-      Serial.print(tprf);
-      //set a bed target temp value to tprst
-    }
-    //read bed and hotend temperatures
-    else if (m == 105) {
-      Serial.println("Checking temps");
-    }
-    //set bed temperature and wait
-    else if (m == 190) {
-      Serial.println("Setting bed temp and waiting");
-    }
-    //set hotend temperature
-    else if (m == 104) {
-      int tprs = line.indexOf("S");
-      float hotendTargetTemp = getGcVal(tprs, line);
-      Serial.println("Setting hotend temp");
-    }
-    //set hotend temperature and wait
-    else if (m == 109) {
-      int tprs = line.indexOf("S");
-      float hotendTargetTemp = getGcVal(tprs, line);
-      Serial.println("Setting hotend temp and waiting");
-    }
-    //extruder fixed cords
-    else if (m == 82) {
 
+    switch (m) {
+      //stop program
+      case 30:
+        printing = false;
+        break;
+
+      //set bed temperature
+      case 140: {
+        int tprs = line.indexOf("S");
+        float tprf = getGcVal(tprs, line);
+        Serial.println("Setting bed temp: ");
+        Serial.print(tprf);
+        break;
+      }
+
+      //read bed and hotend temperatures
+      case 105:
+        Serial.println("Checking temps");
+        break;
+
+      //set bed temperature and wait
+      case 190:
+        Serial.println("Setting bed temp and waiting");
+        break;
+
+      //set hotend temperature
+      case 104: {
+        int tprs = line.indexOf("S");
+        float hotendTargetTemp = getGcVal(tprs, line);
+        Serial.println("Setting hotend temp");
+        break;
+      }
+
+      //set hotend temperature and wait
+      case 109: {
+        int tprs = line.indexOf("S");
+        float hotendTargetTemp = getGcVal(tprs, line);
+        Serial.println("Setting hotend temp and waiting");
+        break;
+      }
+
+      //extruder fixed cords
+      case 82:
+        break;
+
+      //extruder offset cords
+      case 83:
+        break;
+
+      case 18:
+        Serial.println("Disabling motors");
+        digitalWrite(enx, HIGH);
+        digitalWrite(eny, HIGH);
+        break;
     }
-    //extruder offset cords
-    else if (m == 83) {
-      
-    }
+
     return;
   }
 
-    //unuidentified comand
-    Serial.println("Unknown command/comment line: ");
-    Serial.print(line);
-    printing = false;
+  //unuidentified comand
+  Serial.println("Unknown command/comment line: ");
+  Serial.print(line);
+  printing = false;
 }

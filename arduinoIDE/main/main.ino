@@ -4,9 +4,12 @@
 
 const int lsx = 2;
 const int lsy = 3;
+const int enx = 12;
+const int eny = 7;
 
 sdCard sdc(53);
-const char* path = "3dbenchy.gx";
+//const char* path = "3dbenchy.gx";
+const char* path = "TC.gx";
 //const char* path = "strecher.gx";
 bool printing = true;
 
@@ -18,12 +21,12 @@ void setup() {
 
   pinMode(lsx, INPUT_PULLUP);
   pinMode(lsy, INPUT_PULLUP);
-  pinMode(12, OUTPUT);
+  pinMode(enx, OUTPUT);
   pinMode(11, OUTPUT);
   pinMode(10, OUTPUT);
-  pinMode(7, OUTPUT);
-  digitalWrite(12, LOW);
-  digitalWrite(7, LOW);
+  pinMode(eny, OUTPUT);
+  digitalWrite(enx, LOW);
+  digitalWrite(eny, LOW);
 
   movemantInit();
 
