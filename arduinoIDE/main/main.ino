@@ -30,9 +30,12 @@ void setup() {
 
   movemantInit();
 
-  for (int l = 0; l < 150; l++) {
+  float maxLine = 180;
+  for (int l = 0; l < maxLine; l++) {
     //if (!printing) break;
     if (l != 1) executeGCline(path, l);
+    Serial.print(l / maxLine * 100);
+    Serial.print("%");
     delay(50);
   }
   moveToHome();
