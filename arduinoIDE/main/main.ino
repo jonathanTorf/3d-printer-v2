@@ -36,7 +36,7 @@ void setup() {
     if (l != 1) executeGCline(path, l);
     Serial.print(l / maxLine * 100);
     Serial.print("%");
-    delay(50);
+    delay(25);
   }
   moveToHome();
   //moveTo(-10 + size / 2, true, -10 + size / 2, true, 0, false, 0, false, 1000);

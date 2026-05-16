@@ -14,7 +14,7 @@ MultiStepper steppers;
 float stmmx = 1750;
 float stmmy = 85;
 
-float size = 160;
+float size = 170;
 
 int maxSpeed = 1000;
 int acceleration = 500;
