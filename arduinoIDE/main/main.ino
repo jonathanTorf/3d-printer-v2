@@ -33,16 +33,13 @@ void setup() {
   float maxLine = 180;
   for (int l = 0; l < maxLine; l++) {
     //if (!printing) break;
-    if (l != 1) executeGCline(path, l);
+    if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
     Serial.print(l / maxLine * 100);
     Serial.print("%");
     delay(25);
   }
   moveToHome();
-  //moveTo(-10 + size / 2, true, -10 + size / 2, true, 0, false, 0, false, 1000);
   Serial.println("Finished printing");
 }
 
-void loop() {
-
-}
+void loop() {}
