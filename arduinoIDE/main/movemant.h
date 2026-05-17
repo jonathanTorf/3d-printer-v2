@@ -12,9 +12,9 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 MultiStepper steppers;
 
 float stmmx = 1750;
-float stmmy = 85;
+float stmmy = 90;
 
-float size = 170;
+float size = 165;
 
 int maxSpeed = 1000;
 int acceleration = 500;
@@ -124,7 +124,7 @@ void moveTo(float xPos, bool moveX, float yPos, bool moveY, float zPos, bool mov
     steppers.run();
   }
 
-  if (addDelay) delay(200);
+  //if (addDelay) delay(50);
 }
 
 #endif

@@ -36,7 +36,7 @@ void setup() {
     if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
     Serial.print(l / maxLine * 100);
     Serial.print("%");
-    delay(25);
+    delay(10);
   }
   moveToHome();
   Serial.println("Finished printing");
