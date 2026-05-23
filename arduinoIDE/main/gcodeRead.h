@@ -5,7 +5,7 @@ extern bool printing;
 extern const int enx, eny;
 float posX, posY, posZ, posE;
 // float tarPosX, tarPosY, tarPosZ;
-int F;
+int F = 1000;
 
 float getGcVal(int start, String line) {
   String value = "";

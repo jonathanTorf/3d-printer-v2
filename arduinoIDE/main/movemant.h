@@ -21,6 +21,7 @@ int acceleration = 500;
 int defaultSpeed = 1000;
 extern const int lsx;
 extern const int lsy;
+extern const bool skipHomeing;
 
 bool reletiveCords = true;
 int feedrate = 0;
@@ -39,6 +40,7 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
+  if (skipHomeing) return;
   stepperX.setSpeed(7500);
   stepperY.setSpeed(defaultSpeed);
 
@@ -117,6 +119,7 @@ void moveTo(float xPos, bool moveX, float yPos, bool moveY, float zPos, bool mov
   float maxStepSpeed = (F / 60.0) * max(stmmx, stmmy);
   stepperX.setMaxSpeed(maxStepSpeed);
   stepperY.setMaxSpeed(maxStepSpeed);
+  if (maxStepSpeed <= 0) return;
 
   steppers.moveTo(positions);
 

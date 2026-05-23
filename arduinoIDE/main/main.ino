@@ -7,6 +7,8 @@ const int lsy = 3;
 const int enx = 12;
 const int eny = 7;
 
+const bool skipHomeing = false;
+
 sdCard sdc(53);
 //const char* path = "3dbenchy.gx";
 const char* path = "TC.gx";
@@ -30,7 +32,7 @@ void setup() {
 
   movemantInit();
 
-  float maxLine = 180;
+  float maxLine = 120;
   for (int l = 0; l < maxLine; l++) {
     //if (!printing) break;
     if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
