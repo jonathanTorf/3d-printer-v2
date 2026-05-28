@@ -116,10 +116,19 @@ void moveTo(float xPos, bool moveX, float yPos, bool moveY, float zPos, bool mov
     return;
   }
 
-  float maxStepSpeed = (F / 60.0) * max(stmmx, stmmy);
-  stepperX.setMaxSpeed(maxStepSpeed);
-  stepperY.setMaxSpeed(maxStepSpeed);
-  if (maxStepSpeed <= 0) return;
+  float dx = abs(stepperX.targetPosition() - stepperX.currentPosition());
+  float dy = abs(stepperY.targetPosition() - stepperY.currentPosition());
+
+  float dist = sqrt(dx * dx + dy * dy);
+
+  float totalSpeed = (F / 60.0) * max(stmmx, stmmy);
+
+  float speedX = totalSpeed * (dx / dist);
+  float speedY = totalSpeed * (dy / dist);
+
+  stepperX.setMaxSpeed(speedX);
+  stepperY.setMaxSpeed(speedY);
+  //if (maxStepSpeed <= 0) return;
 
   steppers.moveTo(positions);
 
