@@ -1,3 +1,4 @@
+#include "HardwareSerial.h"
 #include <math.h>
 #include "Arduino.h"
 #ifndef MOVEMANT_H
@@ -12,7 +13,7 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 MultiStepper steppers;
 
 float stmmx = 1750;
-float stmmy = 90;
+float stmmy = -90;
 
 float size = 165;
 
@@ -42,7 +43,7 @@ void moveToHome() {
   Serial.println("Homing");
   if (skipHomeing) return;
   stepperX.setSpeed(7500);
-  stepperY.setSpeed(defaultSpeed);
+  stepperY.setSpeed(defaultSpeed * stmmy);
 
   bool reachedX = false;
   bool reachedY = false;
@@ -57,7 +58,7 @@ void moveToHome() {
     if (reachedX && reachedY && reachedZ) break;
   }
   stepperX.setSpeed(-defaultSpeed);
-  stepperY.setSpeed(-defaultSpeed);
+  stepperY.setSpeed(defaultSpeed);
   reachedZ = false;
 
   delay(50);
@@ -111,13 +112,13 @@ void moveTo(float xPos, bool moveX, float yPos, bool moveY, float zPos, bool mov
     else positions[1] = stepperY.currentPosition();
   }
 
-  if (positions[0] > 0 || positions[1] > 0 || F == -1) {
+  if (positions[0] > 0 || positions[1] < 0 || F == -1) {
     Serial.println("Movemant set to outside of range, terminating command.");
     return;
   }
 
-  float dx = abs(stepperX.targetPosition() - stepperX.currentPosition());
-  float dy = abs(stepperY.targetPosition() - stepperY.currentPosition());
+  float dx = abs(stepperX.targetPosition() - positions[0]);
+  float dy = abs(stepperY.targetPosition() - positions[1]);
 
   float dist = sqrt(dx * dx + dy * dy);
 

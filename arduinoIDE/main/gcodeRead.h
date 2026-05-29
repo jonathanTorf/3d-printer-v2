@@ -13,11 +13,7 @@ float getGcVal(int start, String line) {
   // Find start of number
   while (start < line.length()) {
     char c = line[start];
-
-    if ((c >= '0' && c <= '9') || c == '-' || c == '.') {
-      break;
-    }
-
+    if ((c >= '0' && c <= '9') || c == '-' || c == '.') break;
     start++;
   }
 
@@ -29,9 +25,7 @@ float getGcVal(int start, String line) {
       value += c;
       start++;
     }
-    else {
-      break;
-    }
+    else break;
   }
 
   return value.toFloat();
@@ -70,7 +64,6 @@ void gcMove(String line, int g) {
   }
   else F = maxSpeed;
 
-  // Serial.println("moving");
   moveTo(X, mx, Y, my, Z, mz, E, me, F);
 }
 
