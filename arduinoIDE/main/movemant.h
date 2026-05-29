@@ -1,9 +1,9 @@
-#include "HardwareSerial.h"
-#include <math.h>
-#include "Arduino.h"
 #ifndef MOVEMANT_H
 #define MOVEMANT_H
 
+#include "HardwareSerial.h"
+#include <math.h>
+#include "Arduino.h"
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 

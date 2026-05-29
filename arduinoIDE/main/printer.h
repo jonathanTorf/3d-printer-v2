@@ -8,6 +8,8 @@ class printer {
     const int enx = 12;
     const int eny = 7;
 
+    const int funcAmt = 0;
+
     const bool skipHoming = false;
     const char* path = "TC.gx";
     bool printing = true;
@@ -15,6 +17,9 @@ class printer {
   public:
     printer();
     begin();
+    selectFunction();
+    selectPath();
+    print(const char* path);
 };
 
 #endif

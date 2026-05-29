@@ -13,9 +13,19 @@ UI::begin() {
   lcd.setCursor(0, 1);
   lcd.print("By Jonathan Torf");
 
-  delay(2500);
+  delay(1000);
   lcd.clear();
   lcd.print("3D printer-V2");
   lcd.setCursor(0, 1);
-  lcd.print("> to select func");
+  lcd.print("[>]select func");
+}
+
+UI::printFunction(int func) {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  switch (func) {
+    case 0:
+        lcd.print("Pnt: [X]slt");
+        break;
+  }
 }

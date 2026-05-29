@@ -10,6 +10,7 @@ class UI {
   public:
     UI();
     begin();
+    printFunction(int func);
 };
 
 #endif

@@ -1,14 +1,10 @@
-#include "sd.h"
-#include "gcodeRead.h"
-#include "movemant.h"
-#include "joystick.h"
-#include "UI.h"
 #include "printer.h"
 
 printer printer;
 
 void setup() {
   printer.begin();
+  printer.selectFunction();
 
   //moveTo(-10, true, -10, true, 0, false, 0, false, 1000);
   /*float maxLine = 120;

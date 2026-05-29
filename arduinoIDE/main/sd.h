@@ -13,7 +13,7 @@ class sdCard {
     begin();
     String readLine(const char* path, int targetLine);
     writeLine(const char* path, int targetLine, String newLine);
-    listGXFiles(const char* folder = "/");
+    int getGXFiles(const char* path, String outFiles[], int maxFiles = 20);
 };
 
 #endif

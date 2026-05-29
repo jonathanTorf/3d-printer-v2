@@ -6,7 +6,7 @@ class joystick {
     int base = 480;
     int th = 100;
     int xMult = -1;
-    int yMult = 1;
+    int yMult = -1;
 
     int sw;
     int vrx;
@@ -15,8 +15,8 @@ class joystick {
   public:
     joystick(int s, int x, int y);
     begin();
-    getDirX();
-    getDirY();
+    int getDirX();
+    int getDirY();
     bool pressed();
 };
 

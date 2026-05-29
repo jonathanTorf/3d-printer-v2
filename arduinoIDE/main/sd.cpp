@@ -107,34 +107,29 @@ sdCard::writeLine(const char* path, int targetLine, String newLine) {
       }
     }
 
-sdCard::listGXFiles(const char* folder = "/") {
-  File dir = SD.open(folder);
+int sdCard::getGXFiles(const char* path, String outFiles[], int maxFiles = 20) {
+  File dir = SD.open(path);
+  if (!dir) return -1;
 
-  if (!dir) {
-    Serial.println("Failed to open directory");
-    return;
-  }
-
-  if (!dir.isDirectory()) {
-    Serial.println("Not a directory");
-    return;
-  }
-
-  Serial.println("GX files found:");
+  int count = 0;
 
   while (true) {
     File entry = dir.openNextFile();
     if (!entry) break;
 
-    if (!entry.isDirectory()) {
-      String name = entry.name();
+    String name = entry.name();
 
-      // convert to lowercase for safe matching
-      name.toLowerCase();
+    // Skip folders
+    if (entry.isDirectory()) {
+      entry.close();
+      continue;
+    }
 
-      if (name.endsWith(".gx")) {
-        Serial.print(" - ");
-        Serial.println(entry.name());
+    // Check for ".gx"
+    if (name.endsWith(".gx")) {
+      if (count < maxFiles) {
+        outFiles[count] = name;
+        count++;
       }
     }
 
@@ -142,4 +137,5 @@ sdCard::listGXFiles(const char* folder = "/") {
   }
 
   dir.close();
+  return count;
 }
