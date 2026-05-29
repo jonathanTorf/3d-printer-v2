@@ -106,3 +106,40 @@ sdCard::writeLine(const char* path, int targetLine, String newLine) {
         Serial.println("Failed to write file");
       }
     }
+
+sdCard::listGXFiles(const char* folder = "/") {
+  File dir = SD.open(folder);
+
+  if (!dir) {
+    Serial.println("Failed to open directory");
+    return;
+  }
+
+  if (!dir.isDirectory()) {
+    Serial.println("Not a directory");
+    return;
+  }
+
+  Serial.println("GX files found:");
+
+  while (true) {
+    File entry = dir.openNextFile();
+    if (!entry) break;
+
+    if (!entry.isDirectory()) {
+      String name = entry.name();
+
+      // convert to lowercase for safe matching
+      name.toLowerCase();
+
+      if (name.endsWith(".gx")) {
+        Serial.print(" - ");
+        Serial.println(entry.name());
+      }
+    }
+
+    entry.close();
+  }
+
+  dir.close();
+}
