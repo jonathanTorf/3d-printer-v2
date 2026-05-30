@@ -1,5 +1,7 @@
 #include "sd.h"
 #include "movemant.h"
+#include "printer.h"
+
 extern sdCard sdc;
 extern bool printing;
 extern const int enx, eny;

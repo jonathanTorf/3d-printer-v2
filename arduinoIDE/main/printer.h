@@ -3,14 +3,7 @@
 
 class printer {
   private:
-    const int lsx = 2;
-    const int lsy = 3;
-    const int enx = 12;
-    const int eny = 7;
-
     const int funcAmt = 0;
-
-    const bool skipHoming = false;
     const char* path = "TC.gx";
     bool printing = true;
 
@@ -21,5 +14,13 @@ class printer {
     selectPath();
     print();
 };
+
+extern const int lsx;
+extern const int lsy;
+extern const int enx;
+extern const int eny;
+
+extern bool printing;
+extern const bool skipHoming;
 
 #endif

@@ -17,12 +17,14 @@ float stmmy = -90;
 
 float size = 165;
 
+#include "printer.h"
+
 int maxSpeed = 1000;
 int acceleration = 500;
 int defaultSpeed = 1000;
 extern const int lsx;
 extern const int lsy;
-extern const bool skipHomeing;
+extern const bool skipHoming;
 
 bool reletiveCords = true;
 int feedrate = 0;
@@ -41,7 +43,7 @@ void movemantInit() {
 
 void moveToHome() {
   Serial.println("Homing");
-  if (skipHomeing) return;
+  if (skipHoming) return;
   stepperX.setSpeed(7500);
   stepperY.setSpeed(defaultSpeed * stmmy);
 

@@ -6,6 +6,14 @@
 #include "UI.h"
 #include <Wire.h>
 
+const int lsx = 2;
+const int lsy = 3;
+const int enx = 12;
+const int eny = 7;
+
+const bool skipHoming = false;
+bool printing = true;
+
 sdCard sdc(53);
 joystick joystick(13, A2, A3);
 UI ui;
@@ -132,10 +140,18 @@ printer::selectPath() {
 }
 
 printer::print() {
-  int lineCount = sdc.countLines(path);
-
-  Serial.print("Printing: ");
-  Serial.print(path);
-  Serial.print(" with number of lines: ");
+  Serial.print("Counting lines for: ");
+  Serial.println(path);
+  float lineCount = sdc.countLines(path);
+  Serial.print("Printing with number of lines: ");
   Serial.println(lineCount);
+
+  for (int l = 0; l < lineCount; l++) {
+    if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
+    Serial.print(l / lineCount * 100);
+    Serial.print("%");
+    delay(10);
+  }
+  moveToHome();
+  Serial.println("Finished printing");
 }
