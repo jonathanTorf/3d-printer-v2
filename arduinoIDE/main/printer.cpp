@@ -140,6 +140,9 @@ printer::selectPath() {
 }
 
 printer::print() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Preparing...");
   Serial.print("Counting lines for: ");
   Serial.println(path);
   float lineCount = sdc.countLines(path);
@@ -147,11 +150,19 @@ printer::print() {
   Serial.println(lineCount);
 
   for (int l = 0; l < lineCount; l++) {
-    if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
-    Serial.print(l / lineCount * 100);
+    float percent = l / lineCount * 100;
+    lcd.setCursor(0, 0);
+    lcd.print("Printing ");
+    lcd.print(percent);
+    lcd.print("%   ");
+    Serial.print(percent);
     Serial.print("%");
+
+    if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
     delay(10);
   }
   moveToHome();
+  lcd.setCursor(0, 0);
+  lcd.print("Printing 100.00%");
   Serial.println("Finished printing");
 }
