@@ -36,7 +36,7 @@ printer::selectFunction() {
   int func = 0;
   while (joystick.getDirX() != 1) delay(100);
   
-  while (!joystick.pressed()) {
+  while (joystick.getDirY() != -1) {
     if (joystick.getDirX() != 0) {
       func += joystick.getDirX();
       if (func < 0) func = 0;
@@ -53,7 +53,10 @@ printer::selectFunction() {
   Serial.println("Joystick pressed");
   switch (func) {
     case 0:
+      lcd.setCursor(0, 0);
+      lcd.print("[<]ext [>]pnt");
       selectPath();
+      print();
       break;
   }
 }
@@ -108,11 +111,13 @@ printer::selectPath() {
   lcd.setCursor(0, 1);
   lcd.print(outFiles[0]);
   Serial.println(outFiles[0]);
-  while (!joystick.pressed()) {
+  while (joystick.getDirX() != 1) {
     if (joystick.getDirY() != 0) {
-      fileNum += joystick.getDirY();
+      fileNum -= joystick.getDirY();
       if (fileNum < 0) fileNum = 0;
       else if (fileNum > count - 1) fileNum = count - 1;
+      lcd.setCursor(0, 1);
+      lcd.print("                ");
       lcd.setCursor(0, 1);
       lcd.print(outFiles[fileNum]);
       while (joystick.getDirY() != 0) delay(100);
@@ -126,6 +131,11 @@ printer::selectPath() {
   Serial.println(path);
 }
 
-printer::print(const char* path) {
+printer::print() {
+  int lineCount = sdc.countLines(path);
 
+  Serial.print("Printing: ");
+  Serial.print(path);
+  Serial.print(" with number of lines: ");
+  Serial.println(lineCount);
 }

@@ -19,7 +19,7 @@ class printer {
     begin();
     selectFunction();
     selectPath();
-    print(const char* path);
+    print();
 };
 
 #endif

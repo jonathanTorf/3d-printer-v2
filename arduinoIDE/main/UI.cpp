@@ -25,7 +25,7 @@ UI::printFunction(int func) {
   lcd.setCursor(0, 0);
   switch (func) {
     case 0:
-        lcd.print("Pnt: [X]slt");
+        lcd.print("Print: [,]slt");
         break;
   }
 }

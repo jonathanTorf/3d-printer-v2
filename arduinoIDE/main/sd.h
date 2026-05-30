@@ -14,6 +14,7 @@ class sdCard {
     String readLine(const char* path, int targetLine);
     writeLine(const char* path, int targetLine, String newLine);
     int getGXFiles(const char* path, String outFiles[], int maxFiles = 20);
+    int countLines(const char* path);
 };
 
 #endif

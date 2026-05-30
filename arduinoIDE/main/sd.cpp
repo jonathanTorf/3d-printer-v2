@@ -139,3 +139,34 @@ int sdCard::getGXFiles(const char* path, String outFiles[], int maxFiles = 20) {
   dir.close();
   return count;
 }
+
+int sdCard::countLines(const char* path) {
+  File file = SD.open(path);
+
+  if (!file) {
+    Serial.println("Failed to open file");
+    return -1;
+  }
+
+  int lines = 0;
+  bool hasData = false;
+  char lastChar = '\0';
+
+  while (file.available()) {
+    char c = file.read();
+    hasData = true;
+    lastChar = c;
+
+    if (c == '\n') {
+      lines++;
+    }
+  }
+
+  file.close();
+
+  if (hasData && lastChar != '\n') {
+    lines++;
+  }
+
+  return lines;
+}
