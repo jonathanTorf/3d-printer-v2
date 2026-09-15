@@ -8,8 +8,10 @@
 
 const int lsx = 2;
 const int lsy = 3;
+const int lsz;
 const int enx = 12;
 const int eny = 7;
+const int enz;
 
 const bool skipHoming = false;
 bool printing = true;
@@ -30,12 +32,15 @@ printer::begin() {
 
   pinMode(lsx, INPUT_PULLUP);
   pinMode(lsy, INPUT_PULLUP);
+  pinMode(lsz, INPUT_PULLUP);
   pinMode(enx, OUTPUT);
   pinMode(11, OUTPUT);
   pinMode(10, OUTPUT);
   pinMode(eny, OUTPUT);
+  pinMode(enz, OUTPUT);
   digitalWrite(enx, LOW);
   digitalWrite(eny, LOW);
+  digitalWrite(enz, LOW);
 
   movemantInit();
 }

@@ -25,7 +25,4 @@ int joystick::getDirY() {
   else return 0;
 }
 
-bool joystick::pressed() {
-  if (digitalRead(sw) == 1) return false;
-  else return true;
-}
+bool joystick::pressed() {return (!digitalRead(sw) == 1);}

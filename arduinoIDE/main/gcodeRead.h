@@ -195,6 +195,7 @@ void executeGCline(const char* path, int lineNum) {
         Serial.println("Disabling motors");
         digitalWrite(enx, HIGH);
         digitalWrite(eny, HIGH);
+        digitalWrite(enz, HIGH);
         break;
     }
 
