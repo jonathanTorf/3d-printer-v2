@@ -4,6 +4,7 @@
 #include "movemant.h"
 #include "joystick.h"
 #include "UI.h"
+#include "hotend.h"
 #include <Wire.h>
 
 const int lsx = 2;
@@ -19,11 +20,11 @@ bool printing = true;
 sdCard sdc(53);
 joystick joystick(13, A2, A3);
 UI ui;
+// hotend hotend(8, A0);
 
 printer::printer() {}
 
 printer::begin() {
-  Serial.begin(9600);
   Serial.println("program starting");
 
   sdc.begin();
