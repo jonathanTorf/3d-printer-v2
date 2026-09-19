@@ -2,7 +2,7 @@
 #include "hotend.h"
 
 printer printer;
-hotend hotend(8, A0);
+hotend hotend(9, A0);
 
 void setup() {
   Serial.begin(9600);
@@ -12,5 +12,5 @@ void setup() {
 
 void loop() {
   hotend.updatePID(80);
-  delay(1000);
+  delay(300);
 }

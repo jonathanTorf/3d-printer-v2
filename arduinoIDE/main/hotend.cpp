@@ -5,10 +5,11 @@ hotend::hotend(int hep, int tp) {
   hotendPin = hep;
   thermistorPin = tp;
   pinMode(hotendPin, OUTPUT);
+  analogWrite(hotendPin, 0);
 }
 
 float hotend::getTemp() {
-    int adc = analogRead(hotendPin);
+    int adc = analogRead(thermistorPin);
     float voltage = adc * 5.0 / 1023.0;
     float resistance = 100000.0 * voltage / (5.0 - voltage);
     float temperatureK = 1.0 / (1.0 / 298.15 + log(resistance / 100000.0) / 3950.0);
@@ -24,7 +25,7 @@ hotend::updatePID(int sp) {
   float out = 0;
   float rateError = 0;
 
-  if (error * cumError < 0) cumError = 0;
+  if (error * lastError < 0) cumError = 0;
   else cumError += error * elapsedTime;
     
   if (elapsedTime > 0) {
@@ -32,7 +33,7 @@ hotend::updatePID(int sp) {
       out = error * kp + cumError * ki + rateError * kd;
 
       out = constrain(out, 0, 150);
-      analogWrite(8, out);
+      analogWrite(hotendPin, (int)out);
   }
 
   lastError = error;
