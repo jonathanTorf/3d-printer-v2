@@ -5,9 +5,9 @@ class hotend {
   private:
     int hotendPin;
     int thermistorPin;
-    float kp = 10;
-    float ki = 0.3;
-    float kd = 3;
+    float kp = 5;
+    float ki = 0.08;
+    float kd = 5;
 
     long lastTime = 0;
     float cumError = 0;

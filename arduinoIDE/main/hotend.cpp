@@ -22,7 +22,7 @@ hotend::updatePID(int sp) {
   float currantTemp = getTemp();
   float error = sp - currantTemp;
   float elapsedTime = currantTime - lastTime;
-  float out = 0;
+  int out = 0;
   float rateError = 0;
 
   if (error * lastError < 0) cumError = 0;
@@ -32,15 +32,24 @@ hotend::updatePID(int sp) {
       rateError = (error - lastError) / elapsedTime;
       out = error * kp + cumError * ki + rateError * kd;
 
-      out = constrain(out, 0, 150);
-      analogWrite(hotendPin, (int)out);
+      out = constrain(out, 0, 255);
+      // analogWrite(hotendPin, out);
+      int time = out * 5;
+      digitalWrite(hotendPin, HIGH);
+      delay(time);
+      digitalWrite(hotendPin, LOW);
+      delay(255 * 5 - time);
   }
 
   lastError = error;
   lastTime = currantTime;
 
-  Serial.print("Currant temp: ");
+  Serial.print("Time: ");
+  Serial.print(currantTime);
+  Serial.print(", Currant temp: ");
   Serial.print(currantTemp);
+  Serial.print(" / ");
+  Serial.print(sp);
   Serial.print(", out: ");
   Serial.print(out);
   Serial.print(", p: ");
