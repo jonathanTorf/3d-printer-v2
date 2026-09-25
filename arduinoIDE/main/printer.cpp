@@ -20,7 +20,7 @@ bool printing = true;
 sdCard sdc(53);
 joystick joystick(13, A2, A3);
 UI ui;
-// hotend hotend(8, A0);
+hotend HE(10, A0);
 
 printer::printer() {}
 

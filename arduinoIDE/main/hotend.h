@@ -14,9 +14,12 @@ class hotend {
     float lastError = 0;
 
   public:
+    int targetTemp = 0;
+    
     hotend(int hep, int tp);
     float getTemp();
-    updatePID(int sp);
+    void updatePID(int sp);
+    void waitForTemp(int temp);
 };
 
 #endif

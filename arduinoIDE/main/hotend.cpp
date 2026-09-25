@@ -17,13 +17,20 @@ float hotend::getTemp() {
     return(temperatureC);
 }
 
-hotend::updatePID(int sp) {
+void hotend::updatePID(int sp) {
   float currantTime = millis() / 1000.0;
   float currantTemp = getTemp();
   float error = sp - currantTemp;
   float elapsedTime = currantTime - lastTime;
   int out = 0;
   float rateError = 0;
+
+  if (currantTemp < 0 || currantTemp > 350) {
+    Serial.print("currantTemp is outside valid range, skipping PID itiration: ");
+    Serial.println(currantTemp);
+    delay(100);
+    return;
+  }
 
   if (error * lastError < 0) cumError = 0;
   else cumError += error * elapsedTime;
@@ -58,4 +65,21 @@ hotend::updatePID(int sp) {
   Serial.print(cumError * ki);
   Serial.print(", d: ");
   Serial.println(rateError * kd);
+}
+
+void hotend::waitForTemp(int temp) {
+  int currantTemp = getTemp();
+  int lastTemp = 0;
+
+  Serial.print("Waiting for temp: ");
+  Serial.println(temp);
+  while ((int)currantTemp != (int)lastTemp && currantTemp != temp) {
+    currantTemp = getTemp();
+    updatePID(temp);
+    lastTemp = currantTemp;
+  }
+  Serial.print("Target temp acheaved, target: ");
+  Serial.print(temp);
+  Serial.print(", currant: ");
+  Serial.println(getTemp());
 }
