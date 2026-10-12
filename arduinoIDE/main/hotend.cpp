@@ -73,13 +73,16 @@ void hotend::waitForTemp(int temp) {
 
   Serial.print("Waiting for temp: ");
   Serial.println(temp);
-  while ((int)currantTemp != (int)lastTemp && currantTemp != temp) {
-    currantTemp = getTemp();
-    updatePID(temp);
-    lastTemp = currantTemp;
+  for (int i = 0; i < 1; i++) { //repeat twise to account for the overshoot and end on a more stable state
+    while (true) {
+      currantTemp = getTemp();
+      if ((int)currantTemp == (int)lastTemp && currantTemp == temp) break;
+      updatePID(temp);
+      lastTemp = currantTemp;
+    }
   }
   Serial.print("Target temp acheaved, target: ");
   Serial.print(temp);
   Serial.print(", currant: ");
-  Serial.println(getTemp());
+  Serial.println(currantTemp);
 }
