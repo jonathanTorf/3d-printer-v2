@@ -18,9 +18,9 @@ const bool skipHoming = false;
 bool printing = true;
 
 sdCard sdc(53);
-joystick joystick(13, A2, A3);
+joystick joystick(38, A2, A3);
 UI ui;
-hotend HE(10, A0);
+hotend HE(13, A4);
 
 printer::printer() {}
 
