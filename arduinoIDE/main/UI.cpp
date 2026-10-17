@@ -1,9 +1,12 @@
+#include "WString.h"
 #include "UI.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 UI::UI() {}
+
+const String functions[] = {"Print: [,]slt", "Home: [,]slt"};
 
 UI::begin() {
   lcd.init();
@@ -23,9 +26,5 @@ UI::begin() {
 UI::printFunction(int func) {
   lcd.clear();
   lcd.setCursor(0, 0);
-  switch (func) {
-    case 0:
-        lcd.print("Print: [,]slt");
-        break;
-  }
+  lcd.print(functions[func]);
 }

@@ -7,7 +7,7 @@ printer printer;
 void setup() {
   Serial.begin(9600);
   printer.begin();
-  // printer.selectFunction();
+  printer.selectFunction();
 
   // hotend.waitForTemp(110);
 }

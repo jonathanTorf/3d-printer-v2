@@ -47,8 +47,11 @@ printer::begin() {
 }
 
 printer::selectFunction() {
-  int func = 0;
-  while (joystick.getDirX() != 1) delay(100);
+  int func = -1;
+  while (joystick.getDirX() != 1) {
+    delay(100);
+    // Serial.println(joystick.getDirX());
+  }
   
   while (joystick.getDirY() != -1) {
     if (joystick.getDirX() != 0) {
@@ -70,7 +73,9 @@ printer::selectFunction() {
       lcd.setCursor(0, 0);
       lcd.print("[<]ext [>]pnt");
       selectPath();
-      print();
+      break;
+    case 1:
+      moveToHome();
       break;
   }
 }
@@ -79,11 +84,15 @@ printer::selectPath() {
   int maxFiles = 20;
   path = "/";
   char outFiles[maxFiles][32];
-
   File dir = SD.open(path);
 
   if (!dir) {
     Serial.println("Failed to open directory");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("No files found:(");
+    lcd.setCursor(0, 1);
+    lcd.print("RST & try again.");
     return;
   }
 
@@ -143,6 +152,7 @@ printer::selectPath() {
 
   Serial.print("Path selected: ");
   Serial.println(path);
+  print();
 }
 
 printer::print() {

@@ -42,7 +42,7 @@ void movemantInit() {
 }
 
 void moveToHome() {
-  Serial.println("Homing");
+  Serial.println("Homing...");
   if (skipHoming) return;
   stepperX.setSpeed(7500);
   stepperY.setSpeed(defaultSpeed * stmmy);

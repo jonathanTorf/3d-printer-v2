@@ -3,7 +3,7 @@
 
 class printer {
   private:
-    const int funcAmt = 0;
+    const int funcAmt = 1;
     const char* path = "TC.gx";
     bool printing = true;
 
