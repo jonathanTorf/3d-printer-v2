@@ -5,8 +5,8 @@ class joystick {
   private:
     int base = 480;
     int th = 100;
-    int xMult = -1;
-    int yMult = 1;
+    int xMult = 1;
+    int yMult = -1;
 
     int sw;
     int vrx;
@@ -18,6 +18,9 @@ class joystick {
     int getDirX();
     int getDirY();
     bool pressed();
+    int reletiveDir(bool vertical);
 };
+
+extern joystick jStick;
 
 #endif

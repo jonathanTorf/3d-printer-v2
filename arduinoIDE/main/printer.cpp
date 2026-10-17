@@ -18,7 +18,7 @@ const bool skipHoming = false;
 bool printing = true;
 
 sdCard sdc(53);
-joystick joystick(38, A2, A3);
+joystick jStick(38, A2, A3);
 UI ui;
 hotend HE(13, A4);
 
@@ -28,7 +28,7 @@ printer::begin() {
   Serial.println("program starting");
 
   sdc.begin();
-  joystick.begin();
+  jStick.begin();
   ui.begin();
 
   pinMode(lsx, INPUT_PULLUP);
@@ -48,14 +48,14 @@ printer::begin() {
 
 printer::selectFunction() {
   int func = -1;
-  while (joystick.getDirX() != 1) {
+  while (jStick.getDirX() != 1) {
     delay(100);
-    // Serial.println(joystick.getDirX());
+    // Serial.println(jStick.getDirX());
   }
   
-  while (joystick.getDirY() != -1) {
-    if (joystick.getDirX() != 0) {
-      func += joystick.getDirX();
+  while (jStick.getDirY() != -1) {
+    if (jStick.getDirX() != 0) {
+      func += jStick.getDirX();
       if (func < 0) func = 0;
       if (func > funcAmt) func = funcAmt;
       ui.printFunction(func);
@@ -63,11 +63,11 @@ printer::selectFunction() {
       Serial.print("Function: ");
       Serial.println(func);
     }
-    while (joystick.getDirX() != 0) delay(100);
+    while (jStick.getDirX() != 0) delay(100);
 
     delay(100);
   }
-  Serial.println("Joystick pressed");
+  Serial.println("jStick pressed");
   switch (func) {
     case 0:
       lcd.setCursor(0, 0);
@@ -76,6 +76,13 @@ printer::selectFunction() {
       break;
     case 1:
       moveToHome();
+      break;
+    case 2:
+      lcd.setCursor(0, 0);
+      lcd.print("Select axsis:");
+      String axis[] = {"X: [>]slt [<]ext", "Y: [>]slt [<]ext", "Z: [>]slt [<]ext"};
+      int axisIndex = ui.selectFrom(axis, 3);
+
       break;
   }
 }
@@ -129,21 +136,21 @@ printer::selectPath() {
   Serial.print("Total GX files: ");
   Serial.println(count);
 
-  //while (joystick.pressed()) delay(100);
+  //while (jStick.pressed()) delay(100);
   int fileNum = 0;
   lcd.setCursor(0, 1);
   lcd.print(outFiles[0]);
   Serial.println(outFiles[0]);
-  while (joystick.getDirX() != 1) {
-    if (joystick.getDirY() != 0) {
-      fileNum -= joystick.getDirY();
+  while (jStick.getDirX() != 1) {
+    if (jStick.getDirY() != 0) {
+      fileNum -= jStick.getDirY();
       if (fileNum < 0) fileNum = 0;
       else if (fileNum > count - 1) fileNum = count - 1;
       lcd.setCursor(0, 1);
       lcd.print("                ");
       lcd.setCursor(0, 1);
       lcd.print(outFiles[fileNum]);
-      while (joystick.getDirY() != 0) delay(100);
+      while (jStick.getDirY() != 0) delay(100);
     }
 
     delay(100);

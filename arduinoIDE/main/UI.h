@@ -11,6 +11,7 @@ class UI {
     UI();
     begin();
     printFunction(int func);
+    int selectFrom(String *options, int totalOptions, bool verticalSelect = true);
 };
 
 #endif

@@ -26,3 +26,8 @@ int joystick::getDirY() {
 }
 
 bool joystick::pressed() {return (!digitalRead(sw) == 1);}
+
+int joystick::reletiveDir(bool vertical) {
+  if (vertical) return getDirY();
+  return getDirX();
+}

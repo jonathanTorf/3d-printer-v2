@@ -3,7 +3,7 @@
 
 class printer {
   private:
-    const int funcAmt = 1;
+    const int funcAmt = 2;
     const char* path = "TC.gx";
     bool printing = true;
 
@@ -21,6 +21,7 @@ extern const int lsz;
 extern const int enx;
 extern const int eny;
 extern const int enz;
+// extern joystick joystick;
 
 extern bool printing;
 extern const bool skipHoming;
