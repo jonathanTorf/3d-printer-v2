@@ -7,10 +7,10 @@
 #include "hotend.h"
 #include <Wire.h>
 
-const int lsx = 2;
+const int lsx = 37;
 const int lsy = 3;
 const int lsz;
-const int enx = 12;
+const int enx = 45;
 const int eny = 7;
 const int enz;
 
@@ -44,6 +44,7 @@ printer::begin() {
   digitalWrite(enz, LOW);
 
   movemantInit();
+  moveToHome();
 }
 
 printer::selectFunction() {

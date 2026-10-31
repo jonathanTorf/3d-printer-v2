@@ -7,7 +7,7 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
-AccelStepper stepperX(AccelStepper::DRIVER, 8, 9);
+AccelStepper stepperX(AccelStepper::DRIVER, 46, 47);
 AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 MultiStepper steppers;
@@ -48,8 +48,9 @@ void moveToHome() {
   stepperY.setSpeed(defaultSpeed * stmmy);
 
   bool reachedX = false;
-  bool reachedY = false;
+  bool reachedY = true;
   bool reachedZ = true;
+  Serial.println("Movieng to ls");
   while (true) {
     if (!digitalRead(lsx)) reachedX = true;
     if (!digitalRead(lsy)) reachedY = true;
@@ -62,8 +63,10 @@ void moveToHome() {
   stepperX.setSpeed(-defaultSpeed);
   stepperY.setSpeed(defaultSpeed);
   reachedZ = false;
+  reachedY = false;
 
   delay(50);
+  Serial.println("Movieng from ls");
   while (true) {
     if (digitalRead(lsx)) reachedX = false;
     if (digitalRead(lsy)) reachedY = false;
