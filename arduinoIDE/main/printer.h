@@ -21,6 +21,9 @@ extern const int lsz;
 extern const int enx;
 extern const int eny;
 extern const int enz;
+extern const int ms1;
+extern const int ms2;
+extern const int ms3;
 // extern joystick joystick;
 
 extern bool printing;

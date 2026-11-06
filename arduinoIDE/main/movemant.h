@@ -21,7 +21,7 @@ float size = 165;
 
 int maxSpeed = 1000;
 int acceleration = 500;
-int defaultSpeed = 1000;
+int defaultSpeed = 750;
 extern const int lsx;
 extern const int lsy;
 extern const bool skipHoming;
@@ -30,6 +30,10 @@ bool reletiveCords = true;
 int feedrate = 0;
 
 void movemantInit() {
+  digitalWrite(ms1, HIGH);
+  digitalWrite(ms2, LOW);
+  digitalWrite(ms3, LOW);
+
   stepperX.setSpeed(defaultSpeed);
   stepperX.setMaxSpeed(maxSpeed);
   stepperX.setAcceleration(acceleration);

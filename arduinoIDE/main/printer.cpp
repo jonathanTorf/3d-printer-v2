@@ -14,6 +14,10 @@ const int enx = 24;
 const int eny = 7;
 const int enz;
 
+const int ms1 = 39;
+const int ms2 = 40;
+const int ms3 = 41;
+
 const bool skipHoming = false;
 bool printing = true;
 
@@ -45,6 +49,8 @@ printer::begin() {
 
   movemantInit();
   moveToHome();
+  moveTo(-5, true, 0, false, 0, false, 0, false, 25);
+  moveTo(2.5, true, 0, false, 0, false, 0, false, 25);
 }
 
 printer::selectFunction() {
@@ -53,7 +59,7 @@ printer::selectFunction() {
     delay(100);
     // Serial.println(jStick.getDirX());
   }
-  
+
   while (jStick.getDirY() != -1) {
     if (jStick.getDirX() != 0) {
       func += jStick.getDirX();
@@ -81,7 +87,7 @@ printer::selectFunction() {
     case 2:
       lcd.setCursor(0, 0);
       lcd.print("Select axsis:");
-      String axis[] = {"X: [>]slt [<]ext", "Y: [>]slt [<]ext", "Z: [>]slt [<]ext"};
+      String axis[] = { "X: [>]slt [<]ext", "Y: [>]slt [<]ext", "Z: [>]slt [<]ext" };
       int axisIndex = ui.selectFrom(axis, 3);
 
       break;
@@ -182,7 +188,7 @@ printer::print() {
     Serial.print(percent);
     Serial.print("%");
 
-    if (l != 1) executeGCline(path, l); //the second line in gcode files is a preview image
+    if (l != 1) executeGCline(path, l);  //the second line in gcode files is a preview image
     delay(10);
   }
   moveToHome();
