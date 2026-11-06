@@ -1,24 +1,23 @@
 #include <AccelStepper.h>
 
-#define EN_PIN   45
-#define STEP_PIN 46
-#define DIR_PIN  47
+#define EN_PIN   24
+#define STEP_PIN 23
+#define DIR_PIN  22
 
-// DRIVER mode: STEP + DIR
 AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
 
 void setup()
 {
+    Serial.begin(9600);
     pinMode(EN_PIN, OUTPUT);
-
-    // A4988 enable is active LOW
     digitalWrite(EN_PIN, LOW);
 
-    stepper.setMaxSpeed(200);
-    stepper.setAcceleration(500);
+    stepper.setMaxSpeed(2000);
+    stepper.setSpeed(500);
 }
 
 void loop()
 {
     stepper.runSpeed();
+    // Serial.println("test");
 }
