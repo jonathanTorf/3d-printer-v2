@@ -10,7 +10,7 @@
 const int lsx = 37;
 const int lsy = 3;
 const int lsz;
-const int enx = 45;
+const int enx = 24;
 const int eny = 7;
 const int enz;
 
