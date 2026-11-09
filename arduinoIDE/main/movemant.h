@@ -21,7 +21,7 @@ float size = 165;
 
 int maxSpeed = 1000;
 int acceleration = 500;
-int defaultSpeed = 750;
+int defaultSpeed = 500;
 extern const int lsx;
 extern const int lsy;
 extern const bool skipHoming;

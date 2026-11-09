@@ -48,7 +48,7 @@ printer::begin() {
   digitalWrite(enz, LOW);
 
   movemantInit();
-  //moveToHome();
+  moveToHome();
   // moveTo(-5, true, 0, false, 0, false, 0, false, 25);
   // moveTo(2.5, true, 0, false, 0, false, 0, false, 25);
 }
