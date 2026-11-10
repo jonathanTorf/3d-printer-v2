@@ -12,7 +12,7 @@ AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
 
 MultiStepper steppers;
 
-float stmmx = 1750;
+float stmmx = -1750;
 float stmmy = -90;
 
 float size = 165;
@@ -48,7 +48,7 @@ void movemantInit() {
 void moveToHome() {
   Serial.println("Homing...");
   if (skipHoming) return;
-  stepperX.setSpeed(7500);
+  stepperX.setSpeed(defaultSpeed * stmmx);
   stepperY.setSpeed(defaultSpeed * stmmy);
 
   bool reachedX = false;
@@ -64,7 +64,7 @@ void moveToHome() {
 
     if (reachedX && reachedY && reachedZ) break;
   }
-  stepperX.setSpeed(-defaultSpeed);
+  stepperX.setSpeed(defaultSpeed);
   stepperY.setSpeed(defaultSpeed);
   reachedZ = false;
   reachedY = false;
