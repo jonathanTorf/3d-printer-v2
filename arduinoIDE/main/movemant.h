@@ -45,15 +45,23 @@ void movemantInit() {
   steppers.addStepper(stepperY);
 }
 
-void moveToHome() {
-  Serial.println("Homing...");
+void moveToHome(String axis = "XYZ") {
+  bool homeX = axis.indexOf("X") != -1;
+  bool homeY = axis.indexOf("Y") != -1;
+  bool homeZ = axis.indexOf("Z") != -1;
+
+  Serial.print("Homing");
+  if (homeX) Serial.print(" X");
+  if (homeY) Serial.print(" Y");
+  if (homeZ) Serial.print(" Z");
+  Serial.println("...");
   if (skipHoming) return;
   stepperX.setSpeed(defaultSpeed * stmmx);
   stepperY.setSpeed(defaultSpeed * stmmy);
 
-  bool reachedX = false;
-  bool reachedY = true;
-  bool reachedZ = true;
+  bool reachedX = !homeX;
+  bool reachedY = !homeY;
+  bool reachedZ = !homeZ;
   Serial.println("Movieng to ls");
   while (true) {
     if (!digitalRead(lsx)) reachedX = true;
@@ -66,8 +74,9 @@ void moveToHome() {
   }
   stepperX.setSpeed(defaultSpeed);
   stepperY.setSpeed(defaultSpeed);
-  reachedZ = false;
-  reachedY = false;
+  reachedX = homeX;
+  reachedY = homeY;
+  reachedZ = homeZ;
 
   delay(50);
   Serial.println("Movieng from ls");

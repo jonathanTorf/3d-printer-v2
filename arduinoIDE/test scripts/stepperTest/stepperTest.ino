@@ -21,10 +21,12 @@ void setup()
     digitalWrite(EN_PIN, LOW);
 
     stepper.setMaxSpeed(2000);
-    stepper.setSpeed(500);
+    stepper.setSpeed(-100);
+
+    delay(3000);
 }
 
 void loop()
 {
-    stepper.run();
+    stepper.runSpeed();
 }
