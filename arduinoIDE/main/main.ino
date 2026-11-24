@@ -15,5 +15,6 @@ void setup() {
 void loop() {
   // hotend.updatePID(80);
   //Serial.println(hotend.getTemp());
-  delay(1000);
+  // Serial.println(digitalRead(33));
+  delay(100);
 }

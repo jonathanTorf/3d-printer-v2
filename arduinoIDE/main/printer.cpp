@@ -9,7 +9,7 @@
 
 const int lsx = 37;
 const int lsy = 3;
-const int lsz;
+const int lsz = 33;
 const int enx = 24;
 const int eny = 7;
 const int enz;
@@ -48,7 +48,7 @@ printer::begin() {
   digitalWrite(enz, LOW);
 
   movemantInit();
-  moveToHome("X");
+  moveToHome("Z");
   // moveTo(-5, true, 0, false, 0, false, 0, false, 25);
   // moveTo(2.5, true, 0, false, 0, false, 0, false, 25);
 }

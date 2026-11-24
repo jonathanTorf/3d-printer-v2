@@ -9,11 +9,13 @@
 
 AccelStepper stepperX(AccelStepper::DRIVER, 23, 22);
 AccelStepper stepperY(AccelStepper::DRIVER, 11, 10);
+AccelStepper stepperZ(AccelStepper::DRIVER, 23, 22);
 
 MultiStepper steppers;
 
 float stmmx = -1750;
 float stmmy = -90;
+float stmmz = 1;
 
 float size = 165;
 
@@ -24,6 +26,7 @@ int acceleration = 500;
 int defaultSpeed = 500;
 extern const int lsx;
 extern const int lsy;
+extern const int lsz;
 extern const bool skipHoming;
 
 bool reletiveCords = true;
@@ -37,12 +40,18 @@ void movemantInit() {
   stepperX.setSpeed(defaultSpeed);
   stepperX.setMaxSpeed(maxSpeed);
   stepperX.setAcceleration(acceleration);
+
   stepperY.setSpeed(-defaultSpeed);
   stepperY.setMaxSpeed(maxSpeed);
   stepperY.setAcceleration(acceleration);
 
+  stepperZ.setSpeed(-defaultSpeed / 2);
+  stepperZ.setMaxSpeed(maxSpeed / 2);
+  stepperZ.setAcceleration(acceleration / 2);
+
   steppers.addStepper(stepperX);
   steppers.addStepper(stepperY);
+  steppers.addStepper(stepperZ);
 }
 
 void moveToHome(String axis = "XYZ") {
@@ -58,6 +67,7 @@ void moveToHome(String axis = "XYZ") {
   if (skipHoming) return;
   stepperX.setSpeed(defaultSpeed * stmmx);
   stepperY.setSpeed(defaultSpeed * stmmy);
+  stepperZ.setSpeed(defaultSpeed * stmmz);
 
   bool reachedX = !homeX;
   bool reachedY = !homeY;
@@ -66,14 +76,17 @@ void moveToHome(String axis = "XYZ") {
   while (true) {
     if (!digitalRead(lsx)) reachedX = true;
     if (!digitalRead(lsy)) reachedY = true;
+    if (!digitalRead(lsz)) reachedZ = true;
 
     if (!reachedX) stepperX.runSpeed();
     if (!reachedY) stepperY.runSpeed();
+    if (!reachedZ) stepperZ.runSpeed();
 
     if (reachedX && reachedY && reachedZ) break;
   }
   stepperX.setSpeed(defaultSpeed);
   stepperY.setSpeed(defaultSpeed);
+  stepperZ.setSpeed(-defaultSpeed);
   reachedX = homeX;
   reachedY = homeY;
   reachedZ = homeZ;
@@ -83,14 +96,17 @@ void moveToHome(String axis = "XYZ") {
   while (true) {
     if (digitalRead(lsx)) reachedX = false;
     if (digitalRead(lsy)) reachedY = false;
+    if (digitalRead(lsz)) reachedZ = false;
 
     if (reachedX) stepperX.runSpeed();
     if (reachedY) stepperY.runSpeed();
+    if (reachedZ) stepperZ.runSpeed();
 
     if (!reachedX && !reachedY && !reachedZ) break;
   }
   stepperX.setCurrentPosition(0);
   stepperY.setCurrentPosition(0);
+  stepperZ.setCurrentPosition(0);
   Serial.println("Homing done");
 }
 
