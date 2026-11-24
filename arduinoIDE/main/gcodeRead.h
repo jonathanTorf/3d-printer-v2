@@ -180,8 +180,9 @@ void executeGCline(const char* path, int lineNum) {
       //set hotend temperature and wait
       case 109: {
         int tprs = line.indexOf("S");
-        HE.targetTemp = getGcVal(tprs, line);
+        // HE.targetTemp = getGcVal(tprs, line);
         Serial.println("Setting hotend temp and waiting");
+        HE.waitForTemp(getGcVal(tprs, line));
         break;
       }
 
